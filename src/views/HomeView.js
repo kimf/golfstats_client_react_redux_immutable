@@ -1,5 +1,6 @@
-import React       from 'react';
+import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import CourseListItem from 'views/CourseListItem';
 
 // We define mapStateToProps where we'd normally use the @connect
 // decorator so the data requirements are clear upfront, but then
@@ -7,12 +8,14 @@ import { connect } from 'react-redux';
 // the component can be tested w/ and w/o being connected.
 // See: http://rackt.github.io/redux/docs/recipes/WritingTests.html
 const mapStateToProps = (state) => ({
-  counter : state.counter
+  loading : state.courses.loading,
+  courses : state.courses.data
 });
-export class HomeView extends React.Component {
+
+export class HomeView extends Component {
   static propTypes = {
     dispatch : React.PropTypes.func,
-    counter  : React.PropTypes.number
+    courses  : React.PropTypes.array
   }
 
   constructor () {
@@ -21,22 +24,33 @@ export class HomeView extends React.Component {
 
   // normally you'd import an action creator, but I don't want to create
   // a file that you're just going to delete anyways!
-  _increment () {
-    this.props.dispatch({ type : 'COUNTER_INCREMENT' });
+  _selectCourse (id) {
+    this.props.dispatch({ type : 'SELECT_COURSE', id: id });
   }
 
   render () {
-    return (
-      <div className='container text-center'>
-        <h1>Welcome to the React Redux Starter Kit</h1>
-        <h2>Sample Counter: {this.props.counter}</h2>
-        <button className='btn btn-default'
-                onClick={::this._increment}>
-          Increment
-        </button>
-      </div>
-    );
+    if ( this.props.courses.loading ) {
+      return ( <div>LOADING...</div> );
+    } else {
+      return (
+        <div className='container text-center'>
+          <h1>Golfstats</h1>
+
+          <ul>
+             {this.props.courses.map((course, index) =>
+               <CourseListItem {...course}
+                     key={index}
+                     onClick={() => ::this._selectCourse(course.id)} />
+             )}
+           </ul>
+        </div>
+      );
+    }
   }
 }
+
+HomeView.propTypes = {
+  courses: PropTypes.array.isRequired
+};
 
 export default connect(mapStateToProps)(HomeView);

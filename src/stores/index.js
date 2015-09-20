@@ -1,13 +1,20 @@
-import { compose, createStore } from 'redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { devTools } from 'redux-devtools';
 import rootReducer from 'reducers';
+import thunk from 'redux-thunk';
+
+// const middleware = [thunk];
+const middleware = __DEBUG__ ? [require('redux-immutable-state-invariant')(), thunk] : [thunk];
 
 let createStoreWithMiddleware;
 
 if (__DEBUG__) {
-  createStoreWithMiddleware = compose(devTools())(createStore);
+  createStoreWithMiddleware = compose(
+    applyMiddleware(...middleware),
+    devTools()
+  )(createStore);
 } else {
-  createStoreWithMiddleware = createStore;
+  createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
 }
 
 export default function configureStore (initialState) {

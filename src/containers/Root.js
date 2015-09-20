@@ -4,6 +4,7 @@ import { Router }   from 'react-router';
 import routes       from '../routes';
 import { createDevToolsWindow } from '../utils';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
+import { fetchCoursesIfNeeded } from 'actions';
 
 export default class Root extends React.Component {
   static propTypes = {
@@ -13,6 +14,10 @@ export default class Root extends React.Component {
 
   constructor () {
     super();
+  }
+
+  componentDidMount () {
+    this.props.store.dispatch( fetchCoursesIfNeeded() );
   }
 
   renderDevTools () {

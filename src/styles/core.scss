@@ -1,2 +1,21 @@
 @import 'base';
-@import 'vendor/normalize';
+
+.container {
+  max-width: 600px;
+  float: left;
+  padding: 20px;
+  text-align: left;
+}
+
+
+ul {
+  margin-left: 0;
+  padding-left: 0;
+
+  li {
+    float: left;
+    width: 100%;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+  }
+}
