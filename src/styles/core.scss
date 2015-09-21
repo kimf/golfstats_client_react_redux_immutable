@@ -17,5 +17,10 @@ ul {
     width: 100%;
     padding: 10px;
     border-bottom: 1px solid #eee;
+    cursor: pointer;
+
+    &:hover {
+      background: #eee;
+    }
   }
 }

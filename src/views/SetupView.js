@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import CourseListItem from 'views/CourseListItem';
+import CourseListItem from './CourseListItem';
 
-export default class HomeView extends Component {
+
+export default class SetupView extends Component {
   static propTypes = {
     selectCourse : React.PropTypes.func,
-    courses  : React.PropTypes.array
+    club   : React.PropTypes.object
   }
 
   constructor () {
@@ -12,12 +13,14 @@ export default class HomeView extends Component {
   }
 
   render () {
+    const { club } = this.props;
+
     return (
       <div className='container text-center'>
-        <h1>Golfstats</h1>
+        <h1>{club.name}</h1>
 
         <ul>
-           {this.props.courses.map((course, index) =>
+           {club.courses.map((course, index) =>
              <CourseListItem {...course}
                    key={index}
                    onClick={() => ::this.props.selectCourse(course.id)} />
@@ -28,6 +31,6 @@ export default class HomeView extends Component {
   }
 }
 
-HomeView.propTypes = {
-  courses: PropTypes.array.isRequired
+SetupView.propTypes = {
+  club: PropTypes.object.isRequired
 };

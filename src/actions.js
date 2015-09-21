@@ -16,6 +16,14 @@ function receiveCourses(json) {
   };
 }
 
+export const SELECT_COURSE = 'SELECT_COURSE';
+export function selectCourse(id) {
+  return {
+    type: SELECT_COURSE,
+    id: id
+  };
+}
+
 function fetchCourses() {
   return dispatch => {
     // First dispatch: the app state is updated to inform
