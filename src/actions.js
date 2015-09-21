@@ -1,18 +1,26 @@
 import fetch from 'isomorphic-fetch';
 
-export const REQUEST_COURSES = 'REQUEST_COURSES';
-function requestCourses() {
+export const REQUEST_CLUBS = 'REQUEST_CLUBS';
+function requestClubs() {
   return {
-    type: REQUEST_COURSES
+    type: REQUEST_CLUBS
   };
 }
 
-export const RECEIVE_COURSES = 'RECEIVE_COURSES';
-function receiveCourses(json) {
+export const RECEIVE_CLUBS = 'RECEIVE_CLUBS';
+function receiveClubs(json) {
   return {
-    type: RECEIVE_COURSES,
-    courses: json.clubs,
+    type: RECEIVE_CLUBS,
+    clubs: json.clubs,
     receivedAt: Date.now()
+  };
+}
+
+export const SELECT_CLUB = 'SELECT_CLUB';
+export function selectClub(id) {
+  return {
+    type: SELECT_CLUB,
+    id: id
   };
 }
 
@@ -24,12 +32,13 @@ export function selectCourse(id) {
   };
 }
 
-function fetchCourses() {
+
+function fetchClubs() {
   return dispatch => {
     // First dispatch: the app state is updated to inform
     // that the API call is starting.
 
-    dispatch(requestCourses());
+    dispatch(requestClubs());
 
     // The function called by the thunk middleware can return a value,
     // that is passed on as the return value of the dispatch method.
@@ -44,7 +53,7 @@ function fetchCourses() {
         // We can dispatch many times!
         // Here, we update the app state with the results of the API call.
 
-        dispatch(receiveCourses(json))
+        dispatch(receiveClubs(json))
       );
 
       // In a real world app, you also want to
@@ -52,17 +61,17 @@ function fetchCourses() {
   };
 }
 
-function shouldFetchCourses(state) {
-  const courses = state.courses;
-  if (courses.data.length === 0) {
+function shouldFetchClubs(state) {
+  const clubs = state.clubs;
+  if (clubs.length === 0) {
     return true;
-  } else if (courses.loading) {
+  } else if (state.loading) {
     return false;
   }
 }
 
 
-export function fetchCoursesIfNeeded() {
+export function fetchClubsIfNeeded() {
   // Note that the function also receives getState()
   // which lets you choose what to dispatch next.
 
@@ -70,9 +79,9 @@ export function fetchCoursesIfNeeded() {
   // a cached value is already available.
 
   return (dispatch, getState) => {
-    if (shouldFetchCourses(getState())) {
+    if (shouldFetchClubs(getState())) {
       // Dispatch a thunk from thunk!
-      return dispatch(fetchCourses());
+      return dispatch(fetchClubs());
     } else {
       // Let the calling code know there's nothing to wait for.
       return Promise.resolve();

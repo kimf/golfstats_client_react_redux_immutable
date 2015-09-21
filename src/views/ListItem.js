@@ -1,18 +1,17 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class CourseListItem extends Component {
+export default class ListItem extends Component {
   render() {
     return (
       <li
         onClick={this.props.onClick}>
-        {this.props.name}
+        {this.props.title}
       </li>
     );
   }
 }
 
-CourseListItem.propTypes = {
+ListItem.propTypes = {
   onClick: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired
+  title: PropTypes.string.isRequired
 };

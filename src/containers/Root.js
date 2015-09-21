@@ -4,16 +4,19 @@ import { createDevToolsWindow } from '../utils';
 import { connect } from 'react-redux';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
-import HomeView from 'views/HomeView';
+import ClubList from 'views/ClubList';
 import SetupView from 'views/SetupView';
+import TeeList from 'views/TeeList';
 
-import { fetchCoursesIfNeeded, selectCourse } from 'actions';
+import { fetchClubsIfNeeded, selectCourse, selectClub, selectTee } from 'actions';
 import 'styles/core.scss';
 
 const mapStateToProps = (state) => ({
-  loading : state.courses.loading,
-  courses : state.courses.data,
-  currentCourse: state.courses.currentCourse
+  loading : state.loading,
+  clubs : state.clubs,
+  currentClub: state.currentClub,
+  currentCourse: state.currentCourse,
+  currentTee: state.currentTee
 });
 
 
@@ -21,8 +24,10 @@ export class Root extends React.Component {
   static propTypes = {
     loading  : React.PropTypes.bool,
     store    : React.PropTypes.object.isRequired,
-    courses  : React.PropTypes.array,
-    currentCourse : React.PropTypes.object
+    clubs    : React.PropTypes.array,
+    currentCourse : React.PropTypes.object,
+    currentClub   : React.PropTypes.object,
+    currentTee    : React.PropTypes.object
   }
 
   constructor () {
@@ -30,11 +35,19 @@ export class Root extends React.Component {
   }
 
   componentDidMount () {
-    this.props.store.dispatch( fetchCoursesIfNeeded() );
+    this.props.store.dispatch( fetchClubsIfNeeded() );
   }
 
   selectCourse (courseId) {
     this.props.store.dispatch( selectCourse(courseId) );
+  }
+
+  selectClub (clubId) {
+    this.props.store.dispatch( selectClub(clubId) );
+  }
+
+  selectTee (teeId) {
+    this.props.store.dispatch( selectTee(teeId) );
   }
 
   renderDevTools () {
@@ -62,12 +75,15 @@ export class Root extends React.Component {
     if ( this.props.loading ) {
       renderingComponent = ( <div>LOADING...</div> );
     } else {
-      const currentCourse = this.props.currentCourse;
+      const currentClub = this.props.currentClub;
+      const currentCourse  = this.props.currentCourse;
 
-      if ( typeof(currentCourse) !== 'undefined' ) {
-        renderingComponent = <SetupView club={currentCourse} selectCourse={this.selectCourse.bind(this)} />;
+      if ( typeof(currentCourse) !== 'undefined') {
+        renderingComponent = <TeeList course={currentCourse} club={currentClub.name} selectTee={this.selectTee.bind(this)} />;
+      } else if ( typeof(currentClub) !== 'undefined' ) {
+        renderingComponent = <SetupView club={currentClub} selectCourse={this.selectCourse.bind(this)} />;
       } else {
-        renderingComponent =  <HomeView courses={this.props.courses} selectCourse={this.selectCourse.bind(this)} />;
+        renderingComponent =  <ClubList clubs={this.props.clubs} selectClub={this.selectClub.bind(this)} />;
       }
     }
 

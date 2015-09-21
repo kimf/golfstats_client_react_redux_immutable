@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import CourseListItem from './CourseListItem';
+import ListItem from './ListItem';
 
 
 export default class SetupView extends Component {
@@ -21,9 +21,10 @@ export default class SetupView extends Component {
 
         <ul>
            {club.courses.map((course, index) =>
-             <CourseListItem {...course}
-                   key={index}
-                   onClick={() => ::this.props.selectCourse(course.id)} />
+             <ListItem
+               title={course.name}
+               key={index}
+               onClick={() => ::this.props.selectCourse(course.id)} />
            )}
          </ul>
       </div>
