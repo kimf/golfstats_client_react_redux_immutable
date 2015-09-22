@@ -2,10 +2,10 @@ import React, { Component, PropTypes } from 'react';
 import ListItem from 'views/ListItem';
 
 export default class ClubList extends Component {
-  static propTypes = {
-    selectClub : React.PropTypes.func,
-    clubs  : React.PropTypes.array
-  }
+  // static propTypes = {
+  //   selectClub : React.PropTypes.func,
+  //   clubs  : React.PropTypes.array
+  // }
 
   constructor () {
     super();
@@ -30,5 +30,6 @@ export default class ClubList extends Component {
 }
 
 ClubList.propTypes = {
+  selectClub: PropTypes.func.isRequired,
   clubs: PropTypes.array.isRequired
 };

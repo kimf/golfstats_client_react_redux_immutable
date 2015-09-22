@@ -5,10 +5,12 @@ import { connect } from 'react-redux';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
 import ClubList from 'views/ClubList';
-import SetupView from 'views/SetupView';
+import CourseList from 'views/CourseList';
 import TeeList from 'views/TeeList';
+import PlayRoot from 'views/PlayRoot';
+import HoleView from 'views/HoleView';
 
-import { fetchClubsIfNeeded, selectCourse, selectClub, selectTee } from 'actions';
+import { fetchClubsIfNeeded, selectWithId } from 'actions';
 import 'styles/core.scss';
 
 const mapStateToProps = (state) => ({
@@ -27,7 +29,8 @@ export class Root extends React.Component {
     clubs    : React.PropTypes.array,
     currentCourse : React.PropTypes.object,
     currentClub   : React.PropTypes.object,
-    currentTee    : React.PropTypes.object
+    currentTee    : React.PropTypes.object,
+    currentHole   : React.PropTypes.object
   }
 
   constructor () {
@@ -38,16 +41,16 @@ export class Root extends React.Component {
     this.props.store.dispatch( fetchClubsIfNeeded() );
   }
 
+  selectTee (teeId) {
+    this.props.store.dispatch( selectWithId('TEE', teeId) );
+  }
+
   selectCourse (courseId) {
-    this.props.store.dispatch( selectCourse(courseId) );
+    this.props.store.dispatch( selectWithId('COURSE', courseId) );
   }
 
   selectClub (clubId) {
-    this.props.store.dispatch( selectClub(clubId) );
-  }
-
-  selectTee (teeId) {
-    this.props.store.dispatch( selectTee(teeId) );
+    this.props.store.dispatch( selectWithId('CLUB', clubId) );
   }
 
   renderDevTools () {
@@ -70,20 +73,22 @@ export class Root extends React.Component {
       debugTools = this.renderDevTools();
     }
 
-    let renderingComponent = '';
+    const {loading, clubs, currentTee, currentCourse, currentClub} = this.props;
 
-    if ( this.props.loading ) {
+    let renderingComponent = '';
+    if ( loading ) {
       renderingComponent = ( <div>LOADING...</div> );
     } else {
-      const currentClub = this.props.currentClub;
-      const currentCourse  = this.props.currentCourse;
-
-      if ( typeof(currentCourse) !== 'undefined') {
+      if ( typeof(currentHole) !== 'undefined') {
+        renderingComponent = <HoleView hole={currentHole} />;
+      } else if ( typeof(currentTee) !== 'undefined' ) {
+        renderingComponent = <PlayRoot tee={currentTee} course={currentCourse.name} club={currentClub.name} />;
+      } else if ( typeof(currentCourse) !== 'undefined' ) {
         renderingComponent = <TeeList course={currentCourse} club={currentClub.name} selectTee={this.selectTee.bind(this)} />;
       } else if ( typeof(currentClub) !== 'undefined' ) {
-        renderingComponent = <SetupView club={currentClub} selectCourse={this.selectCourse.bind(this)} />;
+        renderingComponent = <CourseList club={currentClub} selectCourse={this.selectCourse.bind(this)} />;
       } else {
-        renderingComponent =  <ClubList clubs={this.props.clubs} selectClub={this.selectClub.bind(this)} />;
+        renderingComponent =  <ClubList clubs={clubs} selectClub={this.selectClub.bind(this)} />;
       }
     }
 

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ListItem from './ListItem';
 
 
-export default class SetupView extends Component {
+export default class CourseList extends Component {
   static propTypes = {
     selectCourse : React.PropTypes.func,
     club   : React.PropTypes.object
@@ -32,6 +32,6 @@ export default class SetupView extends Component {
   }
 }
 
-SetupView.propTypes = {
+CourseList.propTypes = {
   club: PropTypes.object.isRequired
 };

@@ -16,22 +16,14 @@ function receiveClubs(json) {
   };
 }
 
-export const SELECT_CLUB = 'SELECT_CLUB';
-export function selectClub(id) {
+export const SELECT_WITH_ID = 'SELECT_WITH_ID';
+export function selectWithId(model, id) {
   return {
-    type: SELECT_CLUB,
+    type: SELECT_WITH_ID,
+    model: model,
     id: id
   };
 }
-
-export const SELECT_COURSE = 'SELECT_COURSE';
-export function selectCourse(id) {
-  return {
-    type: SELECT_COURSE,
-    id: id
-  };
-}
-
 
 function fetchClubs() {
   return dispatch => {
