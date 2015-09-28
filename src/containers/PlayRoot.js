@@ -7,6 +7,7 @@ import HoleView from 'views/HoleView';
 import HoleSwitcher from 'views/HoleSwitcher';
 
 import { fetchHolesIfNeeded, selectHole } from '../hole_actions';
+import { endRound } from '../actions';
 
 @connect(state => ({
   loading: state.holes.get('loading'),
@@ -82,6 +83,8 @@ export default class PlayRoot extends Component {
         <h3>Tee: {tee.name}</h3>
         <hr />
         { contentDiv }
+        <hr />
+        <a href="#" onClick={() => ::this.props.dispatch(endRound())}>AVSLUTA RUNDA</a>
       </div>
     );
   }

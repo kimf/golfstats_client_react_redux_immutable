@@ -1,5 +1,4 @@
 import fetch from 'isomorphic-fetch';
-import { isEmpty } from 'lodash';
 
 export const REQUEST_HOLES = 'REQUEST_HOLES';
 function requestHoles() {
@@ -54,8 +53,8 @@ function fetchHoles(slopeId) {
 }
 
 function shouldFetchHoles(state) {
-  const holes = state.holes.holes;
-  if (isEmpty(holes)) {
+  const holes = state.holes.get('holes').size;
+  if (holes === 0) {
     return true;
   } else if (state.loading) {
     return false;

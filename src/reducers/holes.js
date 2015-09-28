@@ -17,6 +17,9 @@ export default function holes(state = initialState, action) {
   case 'SELECT_HOLE':
     return state.set('hole', action.id);
 
+  case 'END_ROUND':
+    return initialState;
+
   default:
     return state;
   }

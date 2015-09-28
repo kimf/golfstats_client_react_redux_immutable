@@ -10,6 +10,9 @@ export default function play(state = initialState, action) {
   case 'DE_SELECT_ITEM':
     return state.set(action.model + 'Id', false);
 
+  case 'END_ROUND':
+    return initialState;
+
   default:
     return state;
   }

@@ -1,6 +1,5 @@
 import 'isomorphic-fetch';
 import { normalize, Schema, arrayOf } from 'normalizr';
-import { isEmpty } from 'lodash';
 
 
 const club = new Schema('clubs');
@@ -60,6 +59,13 @@ export function deSelectItem(model) {
   };
 }
 
+export const END_ROUND = 'END_ROUND';
+export function endRound() {
+  return {
+    type: END_ROUND
+  };
+}
+
 function fetchClubs() {
   return dispatch => {
     // First dispatch: the app state is updated to inform
@@ -87,10 +93,10 @@ function fetchClubs() {
 }
 
 function shouldFetchClubs(state) {
-  const clubs = state.clubs.clubs;
-  if (isEmpty(clubs)) {
+  const clubs = state.clubs.get('clubs').size;
+  if (clubs === 0) {
     return true;
-  } else if (state.loading) {
+  } else if (state.get('loading')) {
     return false;
   }
 }

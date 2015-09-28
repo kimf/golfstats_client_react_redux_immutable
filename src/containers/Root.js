@@ -9,7 +9,7 @@ import { filter, values } from 'lodash';
 import ListItem from 'views/ListItem';
 import PlayRoot from 'containers/PlayRoot';
 
-import { fetchClubsIfNeeded, selectItem, deSelectItem } from 'actions';
+import { selectItem, deSelectItem } from 'actions';
 import 'styles/core.scss';
 
 const mapStateToProps = (state) => ({
@@ -19,18 +19,20 @@ const mapStateToProps = (state) => ({
   slopes: state.clubs.get('slopes').toJS(),
   courseId: state.play.get('courseId'),
   clubId: state.play.get('clubId'),
-  slopeId: state.play.get('slopeId')
+  slopeId: state.play.get('slopeId'),
+  storageLoaded: state.storage.loaded
 });
 
 
 export class Root extends Component {
   static propTypes = {
-    loading  : React.PropTypes.bool,
-    store    : React.PropTypes.object.isRequired,
-    clubs    : React.PropTypes.array.isRequired,
-    courses  : React.PropTypes.array.isRequired,
-    slopes   : React.PropTypes.array.isRequired,
-    courseId: PropTypes.oneOfType([
+    storageLoaded : PropTypes.bool,
+    loading       : PropTypes.bool,
+    store         : PropTypes.object.isRequired,
+    clubs         : PropTypes.array.isRequired,
+    courses       : PropTypes.array.isRequired,
+    slopes        : PropTypes.array.isRequired,
+    courseId      : PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.number
     ]).isRequired,
@@ -46,10 +48,6 @@ export class Root extends Component {
 
   constructor () {
     super();
-  }
-
-  componentDidMount () {
-    this.props.store.dispatch( fetchClubsIfNeeded() );
   }
 
   shouldComponentUpdate (nextProps, nextState) {
@@ -87,7 +85,7 @@ export class Root extends Component {
 
     const { clubs, courses, slopes,
             clubId, courseId, slopeId,
-            loading
+            loading, storageLoaded
           } = this.props;
 
     let content = '';
@@ -96,7 +94,9 @@ export class Root extends Component {
     let itemType = '';
     let back = '';
 
-    if ( loading ) {
+    if ( !storageLoaded ) {
+      content = ( <div className="content"><h2>Letar i Localstorage...</h2></div> );
+    } else if ( loading ) {
       content = ( <div className="content"><h2>Loading...</h2></div> );
     } else {
       if ( typeof(clubId) !== 'number' ) {
