@@ -4,7 +4,7 @@ import { createDevToolsWindow } from '../utils';
 import { connect } from 'react-redux';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
-import { values, filter } from 'lodash';
+import { filter, values } from 'lodash';
 
 import ListItem from 'views/ListItem';
 import PlayRoot from 'containers/PlayRoot';
@@ -13,13 +13,13 @@ import { fetchClubsIfNeeded, selectItem, deSelectItem } from 'actions';
 import 'styles/core.scss';
 
 const mapStateToProps = (state) => ({
-  loading: state.clubs.loading,
-  clubs: state.clubs.clubs,
-  courses: state.clubs.courses,
-  slopes: state.clubs.slopes,
-  courseId: state.play.courseId,
-  clubId: state.play.clubId,
-  slopeId: state.play.slopeId
+  loading: state.clubs.get('loading'),
+  clubs: state.clubs.get('clubs').toJS(),
+  courses: state.clubs.get('courses').toJS(),
+  slopes: state.clubs.get('slopes').toJS(),
+  courseId: state.play.get('courseId'),
+  clubId: state.play.get('clubId'),
+  slopeId: state.play.get('slopeId')
 });
 
 
@@ -27,9 +27,9 @@ export class Root extends Component {
   static propTypes = {
     loading  : React.PropTypes.bool,
     store    : React.PropTypes.object.isRequired,
-    clubs    : React.PropTypes.object.isRequired,
-    courses  : React.PropTypes.object.isRequired,
-    slopes   : React.PropTypes.object.isRequired,
+    clubs    : React.PropTypes.array.isRequired,
+    courses  : React.PropTypes.array.isRequired,
+    slopes   : React.PropTypes.array.isRequired,
     courseId: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.number
@@ -122,8 +122,6 @@ export class Root extends Component {
     }
 
     if ( content === '' ) {
-      const arrayItems = values(items);
-
       content = (
       <div className="container">
         { back }
@@ -131,7 +129,7 @@ export class Root extends Component {
         <h2>{title}</h2>
 
         <ul>
-          {arrayItems.map((item) =>
+          {values(items).map((item) =>
             <ListItem title={item.name}
                       onClick={() => ::this.selectItem(itemType, item.id)}
                       key={item.id} />

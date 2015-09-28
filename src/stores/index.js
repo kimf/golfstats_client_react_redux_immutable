@@ -5,7 +5,7 @@ import loggerMiddleware from 'redux-logger';
 import thunk from 'redux-thunk';
 
 // const middleware = [thunk];
-const middleware = __DEBUG__ ? [require('redux-immutable-state-invariant')(), thunk, loggerMiddleware()] : [thunk];
+const middleware = __DEBUG__ ? [thunk, loggerMiddleware()] : [thunk];
 
 let createStoreWithMiddleware;
 

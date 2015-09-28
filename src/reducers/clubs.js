@@ -1,4 +1,6 @@
-const initialState = {loading: false, clubs: {}, courses: {}, slopes: {}};
+import { Map as iMap, List as iList, fromJS } from 'immutable';
+
+const initialState = iMap({loading: false, clubs: iList(), courses: iList(), slopes: iList()});
 // import { filter } from 'lodash';
 
 export default function clubsReducer(state = initialState, action) {
@@ -18,13 +20,19 @@ export default function clubsReducer(state = initialState, action) {
   //   return Object.assign({}, state, newState);
 
   case 'REQUEST_CLUBS':
-    return Object.assign({}, state, {loading: true});
+    return state.set('loading', true);
 
   case 'RECEIVE_CLUBS':
     const clubs = action.clubs.entities.clubs;
     const courses = action.clubs.entities.courses;
     const slopes = action.clubs.entities.slopes;
-    return {loading: false, clubs: clubs, courses: courses, slopes: slopes, receivedAt: action.receivedAt};
+    return fromJS({
+      loading: false,
+      clubs: clubs,
+      courses: courses,
+      slopes: slopes,
+      receivedAt: action.receivedAt
+    });
 
   default:
     return state;

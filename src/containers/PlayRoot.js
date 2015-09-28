@@ -9,9 +9,9 @@ import HoleSwitcher from 'views/HoleSwitcher';
 import { fetchHolesIfNeeded, selectHole } from '../hole_actions';
 
 @connect(state => ({
-  loading: state.holes.loading,
-  holes: state.holes.holes,
-  hole: state.holes.hole
+  loading: state.holes.get('loading'),
+  holes: state.holes.get('holes').toJS(),
+  hole: state.holes.get('hole')
 }))
 
 export default class PlayRoot extends Component {
