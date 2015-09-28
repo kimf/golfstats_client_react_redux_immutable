@@ -1,8 +1,13 @@
-// import { combineReducers } from 'redux';
+import { combineReducers } from 'redux';
+
+import play from './play';
+import holes from './holes';
 import clubs from './clubs';
 
-// export default combineReducers({
-//   clubs
-// });
+const rootReducer = combineReducers({
+  play,
+  holes,
+  clubs
+});
 
-export default clubs;
+export default rootReducer;

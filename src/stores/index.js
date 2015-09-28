@@ -1,10 +1,11 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import { devTools } from 'redux-devtools';
 import rootReducer from 'reducers';
+import loggerMiddleware from 'redux-logger';
 import thunk from 'redux-thunk';
 
 // const middleware = [thunk];
-const middleware = __DEBUG__ ? [require('redux-immutable-state-invariant')(), thunk] : [thunk];
+const middleware = __DEBUG__ ? [require('redux-immutable-state-invariant')(), thunk, loggerMiddleware()] : [thunk];
 
 let createStoreWithMiddleware;
 

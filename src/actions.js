@@ -1,4 +1,25 @@
-import fetch from 'isomorphic-fetch';
+import 'isomorphic-fetch';
+import { normalize, Schema, arrayOf } from 'normalizr';
+import { isEmpty } from 'lodash';
+
+
+const club = new Schema('clubs');
+const course = new Schema('courses');
+const slope = new Schema('slopes');
+
+club.define({
+  courses: arrayOf(course)
+});
+
+course.define({
+  club: club,
+  slopes: arrayOf(slope)
+});
+
+slope.define({
+  course: course
+});
+
 
 export const REQUEST_CLUBS = 'REQUEST_CLUBS';
 function requestClubs() {
@@ -9,19 +30,33 @@ function requestClubs() {
 
 export const RECEIVE_CLUBS = 'RECEIVE_CLUBS';
 function receiveClubs(json) {
+  // const clubs = { clubs: json.clubs.slice(0, 10) };
+
+  const response = normalize(json, {
+    clubs: arrayOf(club)
+  });
+
   return {
     type: RECEIVE_CLUBS,
-    clubs: json.clubs,
+    clubs: response,
     receivedAt: Date.now()
   };
 }
 
-export const SELECT_WITH_ID = 'SELECT_WITH_ID';
-export function selectWithId(model, id) {
+export const SELECT_ITEM = 'SELECT_ITEM';
+export function selectItem(model, id) {
   return {
-    type: SELECT_WITH_ID,
+    type: SELECT_ITEM,
     model: model,
     id: id
+  };
+}
+
+export const DE_SELECT_ITEM = 'DE_SELECT_ITEM';
+export function deSelectItem(model) {
+  return {
+    type: DE_SELECT_ITEM,
+    model: model
   };
 }
 
@@ -41,10 +76,8 @@ function fetchClubs() {
     return fetch(`http://localhost:9292/clubs.json`)
       .then(response => response.json())
       .then(json =>
-
         // We can dispatch many times!
         // Here, we update the app state with the results of the API call.
-
         dispatch(receiveClubs(json))
       );
 
@@ -54,8 +87,8 @@ function fetchClubs() {
 }
 
 function shouldFetchClubs(state) {
-  const clubs = state.clubs;
-  if (clubs.length === 0) {
+  const clubs = state.clubs.clubs;
+  if (isEmpty(clubs)) {
     return true;
   } else if (state.loading) {
     return false;

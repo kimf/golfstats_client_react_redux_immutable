@@ -1,20 +1,26 @@
 import React, { Component, PropTypes } from 'react';
+import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 
 export default class HoleView extends Component {
   static propTypes = {
-    hole   : PropTypes.object.isRequired
+    hole      : PropTypes.object.isRequired
   }
 
-  constructor () {
-    super();
+  constructor (props) {
+    super(props);
+  }
+
+  shouldComponentUpdate (nextProps, nextState) {
+    return !shallowEqual(this.props, nextProps) ||
+           !shallowEqual(this.state, nextState);
   }
 
   render () {
     const { hole } = this.props;
 
     return (
-      <div className='container text-center'>
-        <h1>{hole.number} - {hole.length}</h1>
+      <div className='content'>
+        <h1>{hole.hole.number} - {hole.length}m. Par: {hole.hole.par}</h1>
       </div>
     );
   }

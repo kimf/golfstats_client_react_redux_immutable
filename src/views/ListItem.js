@@ -3,8 +3,7 @@ import React, { Component, PropTypes } from 'react';
 export default class ListItem extends Component {
   render() {
     return (
-      <li
-        onClick={this.props.onClick}>
+      <li onClick={this.props.onClick}>
         {this.props.title}
       </li>
     );
@@ -12,6 +11,6 @@ export default class ListItem extends Component {
 }
 
 ListItem.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
   title: PropTypes.string.isRequired
 };
