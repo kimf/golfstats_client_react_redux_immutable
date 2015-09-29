@@ -1,6 +1,6 @@
-import { Map as iMap, List as iList, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 
-const initialState = iMap({loading: false, clubs: iList(), courses: iList(), slopes: iList()});
+const initialState = fromJS({loading: false, clubs: {}, courses: {}, slopes: {}});
 // import { filter } from 'lodash';
 
 export default function clubsReducer(state = initialState, action) {

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 import { filter, values } from 'lodash';
+// import { ImmutablePropTypes } from 'react-immutable-proptypes';
 
 import ListItem from 'views/ListItem';
 import PlayRoot from 'containers/PlayRoot';
@@ -29,9 +30,10 @@ export class Root extends Component {
     storageLoaded : PropTypes.bool,
     loading       : PropTypes.bool,
     store         : PropTypes.object.isRequired,
-    clubs         : PropTypes.array.isRequired,
-    courses       : PropTypes.array.isRequired,
-    slopes        : PropTypes.array.isRequired,
+    clubs         : PropTypes.object.isRequired,
+    courses       : PropTypes.object.isRequired,
+    slopes        : PropTypes.object.isRequired,
+
     courseId      : PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.number

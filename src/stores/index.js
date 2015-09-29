@@ -1,5 +1,5 @@
 import { applyMiddleware, compose, createStore } from 'redux';
-import { devTools } from 'redux-devtools';
+import { devTools, persistState } from 'redux-devtools';
 import rootReducer from 'reducers';
 import loggerMiddleware from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -26,7 +26,8 @@ let createStoreWithMiddleware;
 if (__DEBUG__) {
   createStoreWithMiddleware = compose(
     applyMiddleware(...middleware),
-    devTools()
+    devTools(),
+    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
   )(createStore);
 } else {
   createStoreWithMiddleware = applyMiddleware(...middleware)(createStore);
