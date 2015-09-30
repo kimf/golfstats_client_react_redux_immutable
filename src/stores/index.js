@@ -12,10 +12,12 @@ let engine = createEngine('golfstats');
 engine = storage.decorators.immutablejs(engine, [
     ['clubs'],
     ['play'],
-    ['holes']
+    ['holes'],
+    ['nav']
 ]);
 
-const middleware = [thunk, storage.createMiddleware(engine, [ 'REQUEST_CLUBS', 'REQUEST_HOLES' ])];
+const IGNORE_ACTIONS = [ 'REQUEST_CLUBS', 'REQUEST_HOLES', 'REQUEST_SCORECARDS', 'FILTER_ITEMS' ];
+const middleware = [thunk, storage.createMiddleware(engine, IGNORE_ACTIONS)];
 
 if ( __DEBUG__ ) {
   middleware.push(loggerMiddleware());
@@ -38,7 +40,7 @@ export default function configureStore (initialState) {
   const load = storage.createLoader(engine);
   load(store)
     .then(() => store.dispatch(fetchClubsIfNeeded()))
-    .catch(() => window.console.log('Failed to load previous state'));
+    .catch((e) => window.console.warn(e, 'Failed to load previous state'));
 
   if (module.hot) {
     module.hot.accept('../reducers', () => {

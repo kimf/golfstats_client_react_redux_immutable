@@ -4,65 +4,29 @@ import { createDevToolsWindow } from '../utils';
 import { connect } from 'react-redux';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
-import { filter, values } from 'lodash';
-// import { ImmutablePropTypes } from 'react-immutable-proptypes';
 
-import ListItem from 'views/ListItem';
-import PlayRoot from 'containers/PlayRoot';
+import PlayingRoot from 'containers/PlayingRoot';
+import ScorecardRoot from 'containers/ScorecardRoot';
+import Loading from 'views/Loading';
 
-import { selectItem, deSelectItem } from 'actions';
 import 'styles/core.scss';
 
-const mapStateToProps = (state) => ({
-  loading: state.clubs.get('loading'),
-  clubs: state.clubs.get('clubs').toJS(),
-  courses: state.clubs.get('courses').toJS(),
-  slopes: state.clubs.get('slopes').toJS(),
-  courseId: state.play.get('courseId'),
-  clubId: state.play.get('clubId'),
-  slopeId: state.play.get('slopeId'),
-  storageLoaded: state.storage.loaded
-});
+@connect(state => ({
+  storageLoaded: state.storage.loaded,
+  activeNav:     state.nav.get('activeNav')
+}))
 
 
-export class Root extends Component {
+export default class Root extends Component {
   static propTypes = {
-    storageLoaded : PropTypes.bool,
-    loading       : PropTypes.bool,
-    store         : PropTypes.object.isRequired,
-    clubs         : PropTypes.object.isRequired,
-    courses       : PropTypes.object.isRequired,
-    slopes        : PropTypes.object.isRequired,
-
-    courseId      : PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.number
-    ]).isRequired,
-    clubId: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.number
-    ]).isRequired,
-    slopeId: PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.number
-    ]).isRequired
-  }
-
-  constructor () {
-    super();
+    store: PropTypes.object.isRequired,
+    storageLoaded : PropTypes.bool.isRequired,
+    activeNav     : PropTypes.string.isRequired
   }
 
   shouldComponentUpdate (nextProps, nextState) {
     return !shallowEqual(this.props, nextProps) ||
            !shallowEqual(this.state, nextState);
-  }
-
-  selectItem (model, id) {
-    this.props.store.dispatch( selectItem(model, id) );
-  }
-
-  resetChoice (what) {
-    this.props.store.dispatch( deSelectItem(what) );
   }
 
   renderDevTools () {
@@ -85,60 +49,22 @@ export class Root extends Component {
       debugTools = this.renderDevTools();
     }
 
-    const { clubs, courses, slopes,
-            clubId, courseId, slopeId,
-            loading, storageLoaded
-          } = this.props;
-
+    const { storageLoaded, activeNav } = this.props;
     let content = '';
-    let title = '';
-    let items = [];
-    let itemType = '';
-    let back = '';
-
     if ( !storageLoaded ) {
-      content = ( <div className="content"><h2>Letar i Localstorage...</h2></div> );
-    } else if ( loading ) {
-      content = ( <div className="content"><h2>Loading...</h2></div> );
+      content = <Loading />;
     } else {
-      if ( typeof(clubId) !== 'number' ) {
-        title = 'What club are you playing at today?';
-        itemType = 'club';
-        items = clubs;
-      } else if ( typeof(courseId) !== 'number' ) {
-        title = 'Choose the course';
-        itemType = 'course';
-        items = filter(courses, { club_id: clubId });
-        back  = (<a href="#" onClick={() => ::this.resetChoice('club')}>&larr; CHANGE CLUB </a>);
-      } else if ( typeof(slopeId) !== 'number'  ) {
-        title = 'From what tee?';
-        itemType = 'slope';
-        items = filter(slopes, { course_id: courseId });
-        back  = (<a href="#" onClick={() => ::this.resetChoice('course')}>&larr; CHANGE COURSE </a>);
-      } else {
-        const currentClub = clubs[clubId];
-        const currentCourse = courses[courseId];
-        const currentSlope = slopes[slopeId];
-        content = <PlayRoot tee={currentSlope} course={currentCourse} club={currentClub} />;
+      switch ( activeNav ) {
+      case 'playing':
+        content = <PlayingRoot />;
+        break;
+      case 'scorecards':
+        content = <ScorecardRoot />;
+        break;
+      default:
+        content = <PlayingRoot />;
+        break;
       }
-    }
-
-    if ( content === '' ) {
-      content = (
-      <div className="container">
-        { back }
-
-        <h2>{title}</h2>
-
-        <ul>
-          {values(items).map((item) =>
-            <ListItem title={item.name}
-                      onClick={() => ::this.selectItem(itemType, item.id)}
-                      key={item.id} />
-          )}
-         </ul>
-      </div>
-      );
     }
 
     return (
@@ -151,6 +77,3 @@ export class Root extends Component {
     );
   }
 }
-
-
-export default connect(mapStateToProps)(Root);

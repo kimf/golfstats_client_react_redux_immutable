@@ -1,21 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import { connect } from 'react-redux';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 
+import Loading from 'views/Loading';
 import ListItem from 'views/ListItem';
 import HoleView from 'views/HoleView';
 import HoleSwitcher from 'views/HoleSwitcher';
 
-import { fetchHolesIfNeeded, selectHole } from '../hole_actions';
 import { endRound } from '../actions';
+import { fetchHolesIfNeeded, selectHole } from '../hole_actions';
 
-@connect(state => ({
-  loading: state.holes.get('loading'),
-  holes: state.holes.get('holes').toJS(),
-  hole: state.holes.get('hole')
-}))
 
-export default class PlayRoot extends Component {
+export default class Play extends Component {
   static propTypes = {
     dispatch   : PropTypes.func.isRequired,
     loading    : PropTypes.bool.isRequired,
@@ -43,19 +38,19 @@ export default class PlayRoot extends Component {
   }
 
   render () {
-    const { loading, holes, hole, tee, course, club } = this.props;
+    const { holes, loading, hole, tee, course, club } = this.props;
     let contentDiv = '';
 
     if (loading || holes.length === 0) {
-      contentDiv = <div>LOADING HOLE DATA...</div>;
+      contentDiv = <Loading />;
     } else if ( typeof(hole) === 'number' ) {
       contentDiv = (
         <div>
           <HoleSwitcher
             maxIndex={holes.length - 1}
             currentIndex={hole}
-            onNext={() => ::this.props.dispatch(selectHole(hole + 1))}
-            onPrev={() => ::this.props.dispatch(selectHole(hole - 1))} />
+            onNext={() => ::this.props.dispatch( selectHole(hole + 1) )}
+            onPrev={() => ::this.props.dispatch( selectHole(hole - 1) )} />
           <HoleView hole={holes[hole]} />
         </div>
       );

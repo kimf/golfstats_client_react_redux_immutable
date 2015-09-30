@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
+import { values, filter, trim } from 'lodash';
 
-const initialState = fromJS({loading: false, clubs: {}, courses: {}, slopes: {}});
-// import { filter } from 'lodash';
+const initialState = fromJS({loading: false, clubs: {}, courses: {}, slopes: {}, filteredClubs: {}});
 
 export default function clubsReducer(state = initialState, action) {
   switch ( action.type ) {
@@ -33,6 +33,15 @@ export default function clubsReducer(state = initialState, action) {
       slopes: slopes,
       receivedAt: action.receivedAt
     });
+
+  case 'FILTER_ITEMS':
+    const query = trim(action.filterQuery.query).toLowerCase();
+    const itemsToFilter = values(state.get('clubs').toJS());
+    const filteredClubs = filter(itemsToFilter, (c) => {
+      const club = trim(c.name).toLowerCase();
+      return club.indexOf(query) !== -1;
+    });
+    return state.merge({filteredClubs: filteredClubs, filterQuery: query});
 
   default:
     return state;

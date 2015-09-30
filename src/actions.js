@@ -59,11 +59,17 @@ export function deSelectItem(model) {
   };
 }
 
+export const FILTER_ITEMS = 'FILTER_ITEMS';
+export function filterItems(query) {
+  return {
+    type: FILTER_ITEMS,
+    filterQuery: query
+  }
+}
+
 export const END_ROUND = 'END_ROUND';
 export function endRound() {
-  return {
-    type: END_ROUND
-  };
+  return window.confirm('Sure?') ? {type: END_ROUND } : {type: 'DEVNULL'};
 }
 
 function fetchClubs() {
@@ -96,7 +102,7 @@ function shouldFetchClubs(state) {
   const clubs = state.clubs.get('clubs').size;
   if (clubs === 0) {
     return true;
-  } else if (state.get('loading')) {
+  } else if (state.clubs.get('loading')) {
     return false;
   }
 }
