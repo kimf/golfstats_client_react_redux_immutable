@@ -6,21 +6,8 @@ const initialState = fromJS({loading: false, clubs: {}, courses: {}, slopes: {},
 export default function clubsReducer(state = initialState, action) {
   switch ( action.type ) {
 
-  // case 'SELECT_ITEM':
-  //   let newState = {};
-  //   if ( action.model === 'club' ) {
-  //     const courses = filter(state.courses, { club_id: action.id });
-  //     newState = { clubs: {}, courses: courses };
-  //   } else if ( action.model === 'course' ) {
-  //     const slopes = filter(state.slopes, { courses: {}, course_id: action.id });
-  //     newState = { slopes: slopes };
-  //   } else if ( action.model === 'slope' ) {
-  //     newState = { clubs: {}, courses: {}, slopes: {} };
-  //   }
-  //   return Object.assign({}, state, newState);
-
-  case 'REQUEST_CLUBS':
-    return state.set('loading', true);
+  case 'SELECT_ITEM':
+    return state.merge({filteredClubs: {}, filterQuery: undefined});
 
   case 'RECEIVE_CLUBS':
     const clubs = action.clubs.entities.clubs;

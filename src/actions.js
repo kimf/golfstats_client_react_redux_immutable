@@ -64,7 +64,7 @@ export function filterItems(query) {
   return {
     type: FILTER_ITEMS,
     filterQuery: query
-  }
+  };
 }
 
 export const END_ROUND = 'END_ROUND';
@@ -85,7 +85,7 @@ function fetchClubs() {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch(`http://localhost:9292/clubs.json`)
+    return fetch(`http://golfstats.fransman.se/clubs.json`)
       .then(response => response.json())
       .then(json =>
         // We can dispatch many times!

@@ -37,7 +37,7 @@ function fetchHoles(slopeId) {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch('http://localhost:9292/slopes/' + slopeId + '.json')
+    return fetch('http://golfstats.fransman.se/slopes/' + slopeId + '.json')
       .then(response => response.json())
       .then(json =>
 

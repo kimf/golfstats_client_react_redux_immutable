@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 
+import PageContainer from 'react-page-transitions'
+
 export default class HoleView extends Component {
   static propTypes = {
     hole      : PropTypes.object.isRequired
@@ -17,6 +19,14 @@ export default class HoleView extends Component {
 
   render () {
     const { hole } = this.props;
+
+    // if(lie == 'IN THE HOLE') {
+    //   shotButton = '... delete last shot here maybe ?...'
+    // } else if(lie == 'GREEN') {
+    //   shotButton = <Putt addPutt={this.addShot.bind(this)} />
+    // } else {
+    //   shotButton = <Shot lie={lie} par={hole.par} length={tee.length} addShot={this.addShot.bind(this)} />
+    // }
 
     return (
       <div className='content'>
