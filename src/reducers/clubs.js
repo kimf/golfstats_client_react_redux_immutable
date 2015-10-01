@@ -10,9 +10,9 @@ export default function clubsReducer(state = initialState, action) {
     return state.merge({filteredClubs: {}, filterQuery: undefined});
 
   case 'RECEIVE_CLUBS':
-    const clubs = action.clubs.entities.clubs;
-    const courses = action.clubs.entities.courses;
-    const slopes = action.clubs.entities.slopes;
+    const clubs = filter(action.clubs.entities.clubs, (i) => i.courses.length > 0);
+    const courses = filter(action.clubs.entities.courses, (i) => i.slopes.length > 0);
+    const slopes = filter(action.clubs.entities.slopes, (i) => i.length > 0);
     return fromJS({
       loading: false,
       clubs: clubs,

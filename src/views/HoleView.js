@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 
-import PageContainer from 'react-page-transitions'
-
 export default class HoleView extends Component {
   static propTypes = {
     hole      : PropTypes.object.isRequired

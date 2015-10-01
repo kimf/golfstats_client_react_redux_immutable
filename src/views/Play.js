@@ -52,7 +52,6 @@ export default class Play extends Component {
             onNext={() => ::this.props.dispatch( selectHole(hole + 1) )}
             onPrev={() => ::this.props.dispatch( selectHole(hole - 1) )} />
           <HoleView hole={holes[hole]} />
-          <ScorecardButton />
         </div>
       );
     } else {
