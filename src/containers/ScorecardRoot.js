@@ -51,7 +51,7 @@ export default class ScorecardRoot extends Component {
       );
     } else {
       contentDiv = (
-        <div>
+        <div className="content">
           <h2>SCORECARDS</h2>
 
           <ul>

@@ -1,6 +1,6 @@
-import { Map as iMap, List as iList } from 'immutable';
+import { fromJS } from 'immutable';
 
-const initialState = iMap({ loading: false, holes: iList(), hole: false });
+const initialState = fromJS({ loading: false, holes: [], hole: false });
 
 export default function holes(state = initialState, action) {
   switch ( action.type ) {
@@ -9,10 +9,11 @@ export default function holes(state = initialState, action) {
     return state.set('loading', true);
 
   case 'RECEIVE_HOLES':
-    return state.mergeDeep({
+    return fromJS({
       loading: false,
+      holes: action.holes,
       receivedAt: action.receivedAt,
-      holes: action.holes});
+      hole: state.get('hole')});
 
   case 'SELECT_HOLE':
     return state.set('hole', action.id);

@@ -1,13 +1,16 @@
-import { fromJS } from 'immutable';
+import { fromJS, List as iList } from 'immutable';
 import { values, filter, trim } from 'lodash';
 
-const initialState = fromJS({loading: false, clubs: {}, courses: {}, slopes: {}, filteredClubs: {}});
+const initialState = fromJS({loading: false, clubs: {}, courses: {}, slopes: {}, filteredClubs: [], filterQuery: ''});
 
 export default function clubsReducer(state = initialState, action) {
   switch ( action.type ) {
 
+  case 'REQUEST_CLUBS':
+    return state.set('loading', true);
+
   case 'SELECT_ITEM':
-    return state.merge({filteredClubs: {}, filterQuery: undefined});
+    return state.merge({filteredClubs: [], filterQuery: ''});
 
   case 'RECEIVE_CLUBS':
     const clubs = filter(action.clubs.entities.clubs, (i) => i.courses.length > 0);
@@ -18,7 +21,9 @@ export default function clubsReducer(state = initialState, action) {
       clubs: clubs,
       courses: courses,
       slopes: slopes,
-      receivedAt: action.receivedAt
+      receivedAt: action.receivedAt,
+      filteredClubs: [],
+      filterQuery: state.get('filterQuery')
     });
 
   case 'FILTER_ITEMS':
@@ -28,7 +33,7 @@ export default function clubsReducer(state = initialState, action) {
       const club = trim(c.name).toLowerCase();
       return club.indexOf(query) !== -1;
     });
-    return state.merge({filteredClubs: filteredClubs, filterQuery: query});
+    return state.merge({filteredClubs: iList(filteredClubs), filterQuery: query});
 
   default:
     return state;

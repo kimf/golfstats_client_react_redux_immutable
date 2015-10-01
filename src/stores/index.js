@@ -5,6 +5,8 @@ import loggerMiddleware from 'redux-logger';
 import thunk from 'redux-thunk';
 import storage from 'redux-storage';
 import createEngine from 'redux-storage/engines/localStorage';
+import multi from 'redux-multi';
+
 import { fetchClubsIfNeeded } from 'actions';
 
 let engine = createEngine('golfstats');
@@ -17,7 +19,7 @@ engine = storage.decorators.immutablejs(engine, [
 ]);
 
 const IGNORE_ACTIONS = [ 'REQUEST_CLUBS', 'REQUEST_HOLES', 'REQUEST_SCORECARDS', 'FILTER_ITEMS' ];
-const middleware = [thunk, storage.createMiddleware(engine, IGNORE_ACTIONS)];
+const middleware = [thunk, multi, storage.createMiddleware(engine, IGNORE_ACTIONS)];
 
 if ( __DEBUG__ ) {
   middleware.push(loggerMiddleware());

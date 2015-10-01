@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
-import { find, filter, values } from 'lodash';
+import { filter, values } from 'lodash';
+
 import { connect } from 'react-redux';
 // import { ImmutablePropTypes } from 'react-immutable-proptypes';
 import TextFilter from 'react-text-filter';
 
-import ListItem from 'views/ListItem';
+import Listing from 'views/Listing';
 import Loading from 'views/Loading';
-import Play from 'views/Play';
 
 import { selectItem, deSelectItem, filterItems } from '../actions';
 
@@ -20,11 +20,9 @@ import { selectItem, deSelectItem, filterItems } from '../actions';
   courseId: state.play.get('courseId'),
   clubId: state.play.get('clubId'),
   slopeId: state.play.get('slopeId'),
-  loadingHoles: state.holes.get('loading'),
-  holes: state.holes.get('holes').toJS(),
-  hole: state.holes.get('hole'),
   filterQuery: state.clubs.get('filterQuery'),
-  filteredClubs: state.clubs.get('filteredClubs')
+  filteredClubs: state.clubs.get('filteredClubs').toJS(),
+  shots: state.play.get('shots').toJS()
 }))
 
 
@@ -33,18 +31,13 @@ export default class PlayingRoot extends Component {
     dispatch      : PropTypes.func.isRequired,
     loading       : PropTypes.bool.isRequired,
     filterQuery   : PropTypes.string.isRequired,
-    filteredClubs : PropTypes.object.isRequired,
+    filteredClubs : PropTypes.array.isRequired,
 
-    clubs         : PropTypes.object.isRequired,
-    courses       : PropTypes.object.isRequired,
-    slopes        : PropTypes.object.isRequired,
+    clubs         : PropTypes.array.isRequired,
+    courses       : PropTypes.array.isRequired,
+    slopes        : PropTypes.array.isRequired,
 
-    loadingHoles  : PropTypes.bool.isRequired,
-    holes         : PropTypes.object.isRequired,
-    hole       : PropTypes.oneOfType([
-      PropTypes.bool,
-      PropTypes.number
-    ]).isRequired,
+    shots         : PropTypes.array.isRequired,
 
     courseId      : PropTypes.oneOfType([
       PropTypes.bool,
@@ -82,27 +75,12 @@ export default class PlayingRoot extends Component {
   }
 
   render () {
-    const { dispatch, loading, clubs, courses, slopes, clubId,
-            courseId, slopeId, loadingHoles, holes, hole, filteredClubs, filterQuery
+    const { loading, clubs, courses, slopes, clubId,
+            courseId, slopeId, filteredClubs, filterQuery
           } = this.props;
 
     if ( loading ) {
       return <Loading />;
-    }
-
-    if ( typeof(clubId) === 'number' && typeof(courseId) === 'number' && typeof(slopeId) === 'number') {
-      const tee = find(slopes, { id: slopeId });
-      const course = find(courses, { id: courseId });
-      const club = find(clubs, { id: clubId });
-      return (
-        <Play dispatch={dispatch}
-         loading={loadingHoles}
-         holes={holes}
-         hole={hole}
-         tee={tee}
-         course={course}
-         club={club} />
-      );
     }
 
     let title = '';
@@ -110,13 +88,13 @@ export default class PlayingRoot extends Component {
     let itemType = '';
     let back = '';
     let filterField = '';
-    const isFiltering = typeof(filterQuery) !== 'undefined';
+    const isFiltering = filterQuery !== '';
 
     if ( typeof(clubId) !== 'number' ) {
       title = 'What club are you playing at today?';
       itemType = 'club';
       filterField = <TextFilter onFilter={(query) => ::this.filterItems({query})} />;
-      items = isFiltering ? filteredClubs.toJS() : clubs;
+      items = isFiltering ? filteredClubs : clubs;
     } else if ( typeof(courseId) !== 'number' ) {
       title = 'Choose the course';
       itemType = 'course';
@@ -129,20 +107,13 @@ export default class PlayingRoot extends Component {
       back  = (<a href="#" onClick={() => ::this.resetChoice('course')}>&larr; CHANGE COURSE </a>);
     }
 
-    return (
-      <div className="container">
-        { back }
-
-        <h2>{title}</h2>
-        {filterField}
-        <ul>
-          {values(items).map((item) =>
-            <ListItem title={item.name}
-                      onClick={() => ::this.selectItem(itemType, item.id)}
-                      key={item.id} />
-          )}
-         </ul>
-      </div>
+    return (<Listing
+               title={title}
+               items={values(items)}
+               itemType={itemType}
+               back={back}
+               filterField={filterField}
+               selectItem={::this.selectItem} />
     );
   }
 }

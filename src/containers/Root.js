@@ -8,6 +8,7 @@ import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 import PlayingRoot from 'containers/PlayingRoot';
 import ScorecardRoot from 'containers/ScorecardRoot';
 import Loading from 'views/Loading';
+import Play from 'containers/Play';
 
 import 'styles/core.scss';
 
@@ -56,7 +57,7 @@ export default class Root extends Component {
     } else {
       switch ( activeNav ) {
       case 'playing':
-        content = <PlayingRoot />;
+        content = <Play />;
         break;
       case 'scorecards':
         content = <ScorecardRoot />;
@@ -68,7 +69,7 @@ export default class Root extends Component {
     }
 
     return (
-      <div>
+      <div className="container">
         {debugTools}
         <Provider store={this.props.store}>
           { content }

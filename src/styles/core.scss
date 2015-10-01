@@ -1,18 +1,45 @@
 @import 'base';
 
 .container {
-  max-width: 600px;
   float: left;
-  padding: 20px;
   text-align: left;
+  max-width: 370px;
+  overflow-x: scroll;
+}
+
+.content {
+  padding: 20px;
+  float: left;
+  width: 100%
+}
+
+header, footer {
+  background: #ccc;
+  padding: 10px 20px;
+  width: 100%;
+  float: left;
+
+  input {
+    float: left;
+    width: 100%;
+    padding: 5px;
+    font-size: 1.2em;
+  }
+
+  &.subheader {
+    background: #eee;
+  }
 }
 
 
 ul {
-  margin-left: 0;
-  padding-left: 0;
+  margin: 0;
+  padding: 0;
+  float: left;
+  width: 100%;
 
   li {
+    list-style: none;
     float: left;
     width: 100%;
     padding: 10px;
@@ -21,6 +48,30 @@ ul {
 
     &:hover {
       background: #eee;
+    }
+
+    &.grid {
+      text-align: center;
+      padding: 10px;
+      width: 100px;
+      float: left;
+      margin: 0 10px 10px 0;
+      background: #eee;
+
+      strong {
+        font-size: 40px;
+        font-weight: bold;
+      }
+
+      small {
+        float: left;
+        width: 100%;
+      }
+
+      &:hover {
+        background: #00B2CA;
+        color: #fff;
+      }
     }
   }
 }

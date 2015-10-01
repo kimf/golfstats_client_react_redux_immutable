@@ -2,9 +2,7 @@ import fetch from 'isomorphic-fetch';
 
 export const REQUEST_HOLES = 'REQUEST_HOLES';
 function requestHoles() {
-  return {
-    type: REQUEST_HOLES
-  };
+  return { type: REQUEST_HOLES };
 }
 
 export const RECEIVE_HOLES = 'RECEIVE_HOLES';
@@ -18,10 +16,7 @@ function receiveHoles(json) {
 
 export const SELECT_HOLE = 'SELECT_HOLE';
 export function selectHole(id) {
-  return {
-    type: SELECT_HOLE,
-    id: id
-  };
+  return { type: SELECT_HOLE, id };
 }
 
 function fetchHoles(slopeId) {

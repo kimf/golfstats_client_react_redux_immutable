@@ -1,7 +1,6 @@
 import 'isomorphic-fetch';
 import { normalize, Schema, arrayOf } from 'normalizr';
 
-
 const club = new Schema('clubs');
 const course = new Schema('courses');
 const slope = new Schema('slopes');
@@ -19,15 +18,10 @@ slope.define({
   course: course
 });
 
-
-export const REQUEST_CLUBS = 'REQUEST_CLUBS';
 function requestClubs() {
-  return {
-    type: REQUEST_CLUBS
-  };
+  return { type: 'REQUEST_CLUBS' };
 }
 
-export const RECEIVE_CLUBS = 'RECEIVE_CLUBS';
 function receiveClubs(json) {
   // const clubs = { clubs: json.clubs.slice(0, 10) };
 
@@ -36,40 +30,48 @@ function receiveClubs(json) {
   });
 
   return {
-    type: RECEIVE_CLUBS,
+    type: 'RECEIVE_CLUBS',
     clubs: response,
     receivedAt: Date.now()
   };
 }
 
-export const SELECT_ITEM = 'SELECT_ITEM';
+export function gotoView(view) {
+  return { type: 'GO_TO_VIEW', view: view };
+}
+
+export function setSelectedItem(model, id) {
+  return { type: 'SELECT_ITEM', model, id };
+}
+
 export function selectItem(model, id) {
-  return {
-    type: SELECT_ITEM,
-    model: model,
-    id: id
+  return (dispatch, getState) => {
+    dispatch(setSelectedItem(model, id));
+    const state = getState().play;
+    if ( state.get('clubId') !== false && state.get('courseId') !== false && state.get('slopeId') !== false) {
+      dispatch(gotoView('playing'));
+    }
   };
 }
 
-export const DE_SELECT_ITEM = 'DE_SELECT_ITEM';
 export function deSelectItem(model) {
-  return {
-    type: DE_SELECT_ITEM,
-    model: model
-  };
+  return { type: 'DE_SELECT_ITEM', model };
 }
 
-export const FILTER_ITEMS = 'FILTER_ITEMS';
-export function filterItems(query) {
-  return {
-    type: FILTER_ITEMS,
-    filterQuery: query
-  };
+export function filterItems(filterQuery) {
+  return { type: 'FILTER_ITEMS', filterQuery };
 }
 
-export const END_ROUND = 'END_ROUND';
 export function endRound() {
-  return window.confirm('Sure?') ? {type: END_ROUND } : {type: 'DEVNULL'};
+  return {type: 'END_ROUND' };
+}
+
+export function addShot(shot, holeId) {
+  return { type: 'ADD_SHOT', shot, holeId };
+}
+
+export function removeShot(index) {
+  return { type: 'REMOVE_SHOT', index };
 }
 
 function fetchClubs() {
