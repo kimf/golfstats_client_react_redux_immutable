@@ -18,7 +18,6 @@ export default class Putt extends Component {
     const putt = { putt: true, result: this.state.result, distance: this.state.distance, endLie: this.state.endLie };
     if (putt.distance && putt.result) {
       this.props.addPutt(putt);
-      this.setState({ putt: true, result: false, distance: false });
     }
   }
 

@@ -29,7 +29,6 @@ import { fetchHolesIfNeeded, selectHole } from '../hole_actions';
 
 export default class Play extends Component {
   static propTypes = {
-    dispatch   : PropTypes.func.isRequired,
     slopes     : PropTypes.array.isRequired,
     clubs      : PropTypes.array.isRequired,
     courses    : PropTypes.array.isRequired,

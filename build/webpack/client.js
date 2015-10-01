@@ -49,7 +49,6 @@ const webpackConfig = {
         loaders : [
           'style-loader',
           'css-loader',
-          'autoprefixer?browsers=last 2 version',
           'sass-loader?includePaths[]=' + paths.src('styles')
         ]
       }
