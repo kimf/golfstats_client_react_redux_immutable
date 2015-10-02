@@ -18,8 +18,8 @@ export default class Listing extends Component {
     this.back = false;
   }
 
-  resetChoice () {
-    this.props.dispatch( deSelectItem(this.itemType) );
+  resetChoice (itemType) {
+    this.props.dispatch( deSelectItem(itemType) );
   }
 
   selectItem (item) {

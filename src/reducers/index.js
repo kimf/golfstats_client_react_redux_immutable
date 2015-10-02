@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerStateReducer } from 'redux-router';
 
 import play     from 'reducers/play';
 import clubs    from 'reducers/clubs';
@@ -9,6 +10,7 @@ import clubs    from 'reducers/clubs';
 
 
 const rootReducer = combineReducers({
+  router: routerStateReducer,
   play,
   clubs
 });

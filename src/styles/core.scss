@@ -87,3 +87,28 @@ ul {
     }
   }
 }
+
+
+.gridLink {
+  text-align: center;
+  padding: 10px;
+  width: 40px;
+  float: left;
+  margin: 0 10px 10px 0;
+  background: #eee;
+
+  strong {
+    font-size: 40px;
+    font-weight: bold;
+  }
+
+  small {
+    float: left;
+    width: 100%;
+  }
+
+  &:hover {
+    background: #00B2CA;
+    color: #fff;
+  }
+}

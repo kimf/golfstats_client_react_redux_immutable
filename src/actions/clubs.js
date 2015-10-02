@@ -22,7 +22,9 @@ function fetchClubs() {
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
 
-    return fetch(`http://golfstats.fransman.se/clubs.json`)
+    const API_URL = (process.env.NODE_ENV === 'development') ? 'http://workbook.local:9292' : 'http://golfstats.fransman.se';
+
+    return fetch(API_URL +  '/clubs.json')
       .then(response => response.json())
       .then(json =>
         // We can dispatch many times!

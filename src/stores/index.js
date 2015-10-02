@@ -7,6 +7,9 @@ import multi from 'redux-multi';
 import persistState, {mergePersistedState} from 'redux-localstorage';
 import adapter from 'redux-localstorage/lib/adapters/localStorage';
 import filter from 'redux-localstorage-filter';
+import { reduxReactRouter } from 'redux-router';
+import { createHistory } from 'history';
+import storeEnhancer from 'redux-history-transitions';
 import { fromJS } from 'immutable';
 
 const middleware = [thunk, multi];
@@ -16,7 +19,7 @@ if ( __DEBUG__ ) {
 }
 
 const storage = compose(
-  filter(['play', 'clubs'])
+  filter(['play', 'clubs', 'router'])
 )(adapter(window.localStorage));
 
 const reducer = compose(
@@ -29,11 +32,15 @@ const reducer = compose(
 )(rootReducer);
 
 
+const history = createHistory();
+
 let createStoreWithMiddleware;
 
 if (__DEBUG__) {
   createStoreWithMiddleware = compose(
     applyMiddleware(...middleware),
+    reduxReactRouter({history}),
+    storeEnhancer(history),
     persistState(storage, 'golftracr_dev'),
     devTools(),
     persistDevToolsState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
@@ -41,6 +48,8 @@ if (__DEBUG__) {
 } else {
   createStoreWithMiddleware = compose(
     applyMiddleware(...middleware),
+    reduxReactRouter(history),
+    storeEnhancer(history),
     persistState(storage, 'golftracr')
   )(createStore);
 }

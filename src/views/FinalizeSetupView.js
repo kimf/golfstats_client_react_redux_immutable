@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { selectItem, deSelectItem } from 'actions/general';
+import { deSelectItem } from 'actions/general';
+import { times } from 'lodash';
 
-import GridItem from 'views/GridItem';
-import Loading from 'views/Loading';
+import { Link } from 'react-router';
+
+// import Loading from 'views/Loading';
+// { (holes.length === 0) ? <Loading /> : ''}
 
 export default class FinalizeSetupView extends Component {
   static propTypes = {
@@ -10,6 +13,10 @@ export default class FinalizeSetupView extends Component {
     club: PropTypes.object.isRequired,
     course: PropTypes.object.isRequired,
     slope: PropTypes.object.isRequired
+  }
+
+  static contextTypes = {
+    router: React.PropTypes.func
   }
 
   render() {
@@ -26,15 +33,10 @@ export default class FinalizeSetupView extends Component {
           </header>
           <div className="content">
             <h2>Select starting hole</h2>
-            { (loading || holes.length === 0) ? <Loading /> : ''}
             <ul>
-             {holes.map((t, index) =>
-               <GridItem
-                 title={t.hole.number.toString(10)}
-                 subTitle={'par ' + t.hole.par + '- (' + t.length + 'm)'}
-                 key={index}
-                 onClick={() => ::this.props.dispatch(selectItem('hole', index))} />
-             )}
+              {times(slope.tee_count, (index) =>
+                 <Link key={index} className="gridLink" to={`/play/${index}`}>{(index + 1).toString(10)}</Link>
+              )}
             </ul>
           </div>
         </div>

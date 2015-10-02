@@ -26,8 +26,8 @@ function fetchHoles(slopeId) {
 
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
-
-    return fetch('http://golfstats.fransman.se/slopes/' + slopeId + '.json')
+    const API_URL = (process.env.NODE_ENV === 'development') ? 'http://workbook.local:9292' : 'http://golfstats.fransman.se';
+    return fetch(API_URL + '/slopes/' + slopeId + '.json')
       .then(response => response.json())
       .then(json =>
 
@@ -43,10 +43,10 @@ function fetchHoles(slopeId) {
 }
 
 function shouldFetchHoles(state) {
-  const holes = state.holes.get('holes').size;
+  const holes = state.play.get('holes').size;
   if (holes === 0) {
     return true;
-  } else if (state.holes.get('loading')) {
+  } else if (state.play.get('loading')) {
     return false;
   }
 }

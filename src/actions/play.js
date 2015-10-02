@@ -1,5 +1,12 @@
 export function endRound() {
-  return {type: 'END_ROUND' };
+  return {
+    type: 'END_ROUND',
+    meta: {
+      transition: () => ({
+        path: '/'
+      })
+    }
+  };
 }
 
 export function addShot(shot, holeId) {

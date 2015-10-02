@@ -6,6 +6,6 @@ export default class CourseList extends Listing {
     super(props);
     this.itemType = 'course';
     this.title = 'What course?';
-    this.back = <a href="#" onClick={() => ::this.resetChoice()}>&larr; CHANGE CLUB </a>;
+    this.back = <a href="#" onClick={() => ::this.resetChoice('club')}>&larr; CHANGE CLUB </a>;
   }
 }

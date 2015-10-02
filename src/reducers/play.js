@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 
-const initialState = fromJS({slope: false, course: false, club: false, shots: []});
+const initialState = fromJS({loading: false, slope: false, course: false, club: false, shots: [], holes: []});
 
 // // normally this would be imported from /constants, but in trying to keep
 // // this starter kit as small as possible we'll just define it here.
@@ -19,8 +19,11 @@ export default function play(state = initialState, action) {
   case 'DE_SELECT_ITEM':
     return state.set(action.model, false);
 
-  case 'END_ROUND':
-    return initialState;
+  case 'REQUEST_HOLES':
+    return state.set('loading', true);
+
+  case 'RECEIVE_HOLES':
+    return state.merge({holes: fromJS(action.holes), loading: false});
 
   case 'ADD_SHOT':
     // wait for pushIn!
@@ -29,6 +32,9 @@ export default function play(state = initialState, action) {
 
   case 'REMOVE_SHOT':
     return state.removeIn(['shots', action.index]);
+
+  case 'END_ROUND':
+    return initialState;
 
   default:
     return state;

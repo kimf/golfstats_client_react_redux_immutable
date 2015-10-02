@@ -70,8 +70,8 @@ config.set('path_project', path.resolve(__dirname, '../'));
 // Utilities
 // ------------------------------------
 const paths = (() => {
-  const base    = [config.get('path_project')],
-        resolve = path.resolve;
+  const base    = [config.get('path_project')];
+  const resolve = path.resolve;
 
   const project = (...args) => resolve.apply(resolve, [...base, ...args]);
 

@@ -61,9 +61,6 @@ export default class HoleView extends Component {
            </ul>
            {shotButton}
         </div>
-        <footer>
-           <ConfirmButton title="AVSLUTA RUNDA" question="For realz?" onConfirm={() => ::this.endRound()} />
-         </footer>
       </div>
     );
   }
