@@ -48,6 +48,7 @@ export default class HoleView extends Component {
       <div>
         <header>
           <h1>Hole {hole.hole.number} <small>{hole.length}m</small> <small>Par: {hole.hole.par}</small></h1>
+          <a href="#" onClick={() => ::this.resetChoice()}>&larr; CHANGE TEE </a>;
         </header>
         <div className="content">
           <ul>
@@ -60,6 +61,9 @@ export default class HoleView extends Component {
            </ul>
            {shotButton}
         </div>
+        <footer>
+           <ConfirmButton title="AVSLUTA RUNDA" question="For realz?" onConfirm={() => ::this.endRound()} />
+         </footer>
       </div>
     );
   }

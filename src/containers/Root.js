@@ -1,33 +1,25 @@
-import React, { Component, PropTypes } from 'react';
+import React        from 'react';
 import { Provider } from 'react-redux';
+import { Router }   from 'react-router';
+import invariant    from 'invariant';
+import routes       from '../routes';
+import { RoutingContext } from 'react-router';
 import { createDevToolsWindow } from '../utils';
-import { connect } from 'react-redux';
-import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
 
-import PlayingRoot from 'containers/PlayingRoot';
-import ScorecardRoot from 'containers/ScorecardRoot';
-import Loading from 'views/Loading';
-import Play from 'containers/Play';
+export default class Root extends React.Component {
 
-import 'styles/core.scss';
-
-@connect(state => ({
-  storageLoaded: state.storage.loaded,
-  activeNav:     state.nav.get('activeNav')
-}))
-
-
-export default class Root extends Component {
+  // routerHistory is provided by the client bundle to determine which
+  // history to use (memory, hash, browser). routingContext, on the other hand,
+  // is provided by the server and provides a full router state.
   static propTypes = {
-    store: PropTypes.object.isRequired,
-    storageLoaded : PropTypes.bool.isRequired,
-    activeNav     : PropTypes.string.isRequired
+    store          : React.PropTypes.object.isRequired,
+    routerHistory  : React.PropTypes.object,
+    routingContext : React.PropTypes.object
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
-    return !shallowEqual(this.props, nextProps) ||
-           !shallowEqual(this.state, nextState);
+  constructor () {
+    super();
   }
 
   renderDevTools () {
@@ -43,6 +35,23 @@ export default class Root extends Component {
     }
   }
 
+  renderRouter () {
+    invariant(
+      this.props.routingContext || this.props.routerHistory,
+      '<Root /> needs either a routingContext or routerHistory to render.'
+    );
+
+    if (this.props.routingContext) {
+      return <RoutingContext {...this.props.routingContext} />;
+    } else {
+      return (
+        <Router history={this.props.routerHistory}>
+          {routes}
+        </Router>
+      );
+    }
+  }
+
   render () {
     let debugTools = null;
 
@@ -50,29 +59,11 @@ export default class Root extends Component {
       debugTools = this.renderDevTools();
     }
 
-    const { storageLoaded, activeNav } = this.props;
-    let content = '';
-    if ( !storageLoaded ) {
-      content = <Loading />;
-    } else {
-      switch ( activeNav ) {
-      case 'playing':
-        content = <Play />;
-        break;
-      case 'scorecards':
-        content = <ScorecardRoot />;
-        break;
-      default:
-        content = <PlayingRoot />;
-        break;
-      }
-    }
-
     return (
-      <div className="container">
+      <div>
         {debugTools}
         <Provider store={this.props.store}>
-          { content }
+          {this.renderRouter()}
         </Provider>
       </div>
     );

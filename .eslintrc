@@ -1,11 +1,4 @@
 {
-  "parser": "babel-eslint",
-
-  "env": {
-    "browser": true,
-    "node": true
-  },
-
   "extends": "airbnb",
 
   "globals": {
@@ -13,10 +6,6 @@
     "__PROD__"     : false,
     "__DEBUG__"    : false,
     "__DEBUG_NW__" : false
-  },
-
-  "ecmaFeatures": {
-    "modules": true,
   },
 
   "rules": {
@@ -28,10 +17,6 @@
     }],
     "no-else-return": 0,
     "space-before-function-paren": [0, "always"],
-    "react/jsx-quotes": [0, "single"],
-    "strict": [2, "never"],
-    "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2,
-    "react/react-in-jsx-scope": 2
+    "react/jsx-quotes": [0, "single"]
   }
 }
