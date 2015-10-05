@@ -16,10 +16,19 @@ export default class ConfirmButton extends Component {
     this.setState( { confirmed: true } );
   }
 
+  cancelConfirm () {
+    this.setState( { confirmed: false });
+  }
+
   render() {
     const { onConfirm, title, question } = this.props;
     if ( this.state.confirmed ) {
-      return <button onClick={onConfirm}>{question}</button>;
+      return (
+        <span>
+          <button onClick={onConfirm}>{question}</button>
+          <button onClick={::this.cancelConfirm}>nah!</button>
+        </span>
+        );
     } else {
       return <button onClick={::this.setConfirm}>{title}</button>;
     }

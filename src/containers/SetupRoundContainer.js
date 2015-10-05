@@ -5,7 +5,6 @@ import { fetchClubsIfNeeded } from 'actions/clubs';
 import ClubList from 'views/ClubList';
 import CourseList from 'views/CourseList';
 import SlopeList from 'views/SlopeList';
-import FinalizeSetupView from 'views/FinalizeSetupView';
 
 const boolOrObject = PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired;
 
@@ -13,8 +12,7 @@ const mapStateToProps = (state) => ({
   filterQuery: state.clubs.get('filterQuery'),
   clubs: state.clubs.get('clubs').toJS(),
   club: state.play.get('club'),
-  course: state.play.get('course'),
-  slope: state.play.get('slope')
+  course: state.play.get('course')
 });
 
 export class SetupRoundContainer extends Component {
@@ -23,7 +21,6 @@ export class SetupRoundContainer extends Component {
     clubs: PropTypes.array.isRequired,
     club: boolOrObject,
     course: boolOrObject,
-    slope: boolOrObject,
     filterQuery: PropTypes.string.isRequired
   }
 
@@ -36,12 +33,10 @@ export class SetupRoundContainer extends Component {
   }
 
   render () {
-    const { club, clubs, course, slope, dispatch, filterQuery } = this.props;
+    const { club, clubs, course, dispatch, filterQuery } = this.props;
 
     let content = '';
-    if ( slope ) {
-      content = <FinalizeSetupView slope={slope.toJS()} course={course} club={club} dispatch={dispatch} />;
-    } else if ( course ) {
+    if ( course ) {
       content = <SlopeList items={course.get('slopes').toJS()} dispatch={dispatch} filterQuery={filterQuery} />;
     } else if ( club ) {
       content = <CourseList items={club.get('courses').toJS()} dispatch={dispatch} filterQuery={filterQuery} />;

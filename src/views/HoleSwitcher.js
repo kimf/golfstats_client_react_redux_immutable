@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 export default class HoleSwitcher extends Component {
   static propTypes = {
     maxIndex: PropTypes.number.isRequired,
-    currentIndex: PropTypes.number.isRequired,
+    currentIndex: PropTypes.number.isRequired
   }
 
   constructor(props) {

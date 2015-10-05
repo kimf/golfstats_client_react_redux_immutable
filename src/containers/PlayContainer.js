@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchHolesIfNeeded } from 'actions/holes';
-import { endRound, addShot, removeShot } from 'actions/play';
+import { endRound } from 'actions/play';
 
 import Loading from 'views/Loading';
+import HoleView from 'views/HoleView';
 import HoleSwitcher from 'views/HoleSwitcher';
 import ConfirmButton from 'views/ConfirmButton';
 
@@ -14,7 +15,8 @@ const mapStateToProps = (state) => ({
   holes: state.play.get('holes').toJS(),
   club: state.play.get('club').toJS(),
   course: state.play.get('course').toJS(),
-  slope: state.play.get('slope').toJS()
+  slope: state.play.get('slope').toJS(),
+  shots: state.play.get('shots').toJS()
 });
 
 export class PlayContainer extends Component {
@@ -24,7 +26,11 @@ export class PlayContainer extends Component {
     holes: PropTypes.array.isRequired,
     club: PropTypes.object.isRequired,
     course: PropTypes.object.isRequired,
-    slope: PropTypes.object.isRequired
+    slope: PropTypes.object.isRequired,
+    shots: PropTypes.array.isRequired,
+    params: PropTypes.shape({
+      index: PropTypes.string
+    }).isRequired
   }
 
   constructor (props) {
@@ -43,17 +49,17 @@ export class PlayContainer extends Component {
   //         onClick={::this._increment}>
 
   render () {
-    const { loading, holes, club, course, slope, dispatch } = this.props;
+    const { loading, holes, shots, dispatch } = this.props;
 
     if ( loading ) {
       return <Loading />;
     } else {
-      const holeIndex = parseInt(this.props.params.index, 10);
+      const holeIndex = parseInt(this.props.params.index, 10);
       const hole = holes[holeIndex];
 
       return (
         <div>
-          <h2>{hole.number}</h2>
+          <HoleView key={hole.id} hole={hole} shots={shots} dispatch={dispatch} />
           <HoleSwitcher currentIndex={holeIndex} maxIndex={holes.length} />
           <ConfirmButton title="AVSLUTA RUNDA" question="For realz?" onConfirm={() => ::this.props.dispatch(endRound())} />
         </div>
@@ -62,4 +68,4 @@ export class PlayContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps)(PlayContainer)
+export default connect(mapStateToProps)(PlayContainer);
