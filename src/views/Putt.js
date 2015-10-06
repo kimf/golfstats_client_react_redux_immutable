@@ -2,23 +2,11 @@ import React, {Component, PropTypes} from 'react';
 
 export default class Putt extends Component {
   static propTypes = {
-    addPutt: PropTypes.func.isRequired
+    setShotData: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props);
-    this.state = {
-      result: null,
-      distance: 0,
-      endLie: 'GREEN'
-    };
-  }
-
-  componentDidUpdate() {
-    const putt = { putt: true, result: this.state.result, distance: this.state.distance, endLie: this.state.endLie };
-    if (putt.distance && putt.result) {
-      this.props.addPutt(putt);
-    }
   }
 
   addResult (result) {
@@ -31,12 +19,11 @@ export default class Putt extends Component {
     } else {
       endLie = 'GREEN';
     }
-    this.setState( { result: result, endLie: endLie } );
+    this.props.setShotData( { result, endLie } );
   }
 
   addDistance() {
-    window.console.log('adding distance');
-    this.setState( { distance: 2 } );
+    this.props.setShotData( { distance: 2 } );
   }
 
   renderResults(result, index) {

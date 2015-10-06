@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { MISSES } from 'constants';
 
 export default class Miss extends Component {
   static propTypes = {
@@ -7,8 +8,7 @@ export default class Miss extends Component {
 
   constructor(props) {
     super(props);
-    this.misses = ['SHORT', 'LEFT', 'LONG', 'RIGHT', 'SHORT LEFT', 'SHORT RIGHT', 'LONG LEFT', 'LONG RIGHT'];
-    this.state = {};
+    this.misses = MISSES;
   }
 
   render () {

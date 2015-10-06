@@ -6,12 +6,9 @@ export default class Distance extends Component {
     addDistance: PropTypes.func.isRequired
   }
 
-
   constructor(props) {
     super(props);
-    this.state = {};
   }
-
 
   render () {
     const { addDistance } = this.props;

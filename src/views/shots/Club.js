@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { CLUBS } from 'constants';
 
 export default class Club extends Component {
   static propTypes = {
@@ -8,13 +9,11 @@ export default class Club extends Component {
 
   constructor(props) {
     super(props);
-    this.clubs = ['Driver', '3W', '3HY', '4', '5', '6', '7', '8', '9', 'PW', 'GW', 'SW', 'LW', 'PUTT'];
+    this.clubs = CLUBS;
   }
-
 
   render () {
     const { lie, addClub } = this.props;
-
     return (
       <div className="teeshot">
         <h2>WHAT CLUB DID YOU HIT FROM: <strong>{lie}</strong>?</h2>

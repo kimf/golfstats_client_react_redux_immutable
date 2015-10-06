@@ -14,8 +14,8 @@ export function resumeRound() {
   return { type: 'RESUME_ROUND', meta };
 }
 
-export function addShot(shot, holeId) {
-  return { type: 'ADD_SHOT', shot, holeId };
+export function setShotData(shot, holeId, shotIndex) {
+  return { type: 'SET_SHOT_DATA', shot, holeId, shotIndex};
 }
 
 export function removeShot(index) {

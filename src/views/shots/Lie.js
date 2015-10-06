@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { LIES } from 'constants';
 
 export default class Lie extends Component {
   static propTypes = {
@@ -7,10 +8,8 @@ export default class Lie extends Component {
 
   constructor(props) {
     super(props);
-    this.lies = ['TEE', 'FAIRWAY', 'ROUGH', 'GREENSIDE ROUGH', 'FRINGE', 'FAIRWAY BUNKER', 'GREENSIDE BUNKER'];
-    this.state = {};
+    this.lies = LIES;
   }
-
 
   render () {
     const { addLie } = this.props;

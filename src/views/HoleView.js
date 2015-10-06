@@ -1,12 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
-import { last } from 'lodash';
 
 import ShotItem from 'views/ShotItem';
-import Putt from 'views/Putt';
-import Shot from 'views/Shot';
 
-import { addShot, removeShot } from 'actions/play';
+import { removeShot, setShotData } from 'actions/play';
 
 export default class HoleView extends Component {
   static propTypes = {
@@ -24,25 +21,22 @@ export default class HoleView extends Component {
            !shallowEqual(this.state, nextState);
   }
 
-  addShot (shot) {
+  setShotData (shot, index) {
     const hole = this.props.hole;
-    this.props.dispatch( addShot(shot, hole.id) );
+    this.props.dispatch( setShotData(shot, hole.id, index) );
+  }
+
+  removeShot (index) {
+    this.props.dispatch( removeShot(index) );
   }
 
   render () {
-    const { hole, shots } = this.props;
-    const lastShot = last(shots);
-    const lie = lastShot ? lastShot.endLie : 'TEE';
-    let shotButton = '';
+    const { hole } = this.props;
+    let shots = this.props.shots;
 
-    if (lie === 'IN THE HOLE') {
-      shotButton = false;
-    } else if (lie === 'GREEN') {
-      shotButton = <Putt addPutt={::this.addShot} />;
-    } else {
-      shotButton = <Shot lie={lie} par={hole.hole.par} length={hole.length} addShot={::this.addShot} />;
+    if (shots.length === 0) {
+      shots = [{}];
     }
-
 
     return (
       <div>
@@ -54,11 +48,13 @@ export default class HoleView extends Component {
              {shots.map((t, index) =>
                <ShotItem
                  shot={t}
+                 par={hole.hole.par}
                  key={index}
-                 onRemove={() => ::this.props.dispatch(removeShot(index))} />
+                 index={index}
+                 onSetData={::this.setShotData}
+                 onRemove={() => ::this.removeShot(index)} />
              )}
            </ul>
-           {shotButton}
         </div>
       </div>
     );

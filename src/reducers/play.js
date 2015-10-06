@@ -1,6 +1,7 @@
-import { fromJS } from 'immutable';
+import { fromJS, List as iList } from 'immutable';
 
-const initialState = fromJS({loading: false, slope: false, course: false, club: false, shots: [], holes: [], currentHole: 0});
+const initialState = fromJS({ loading: false, slope: false, course: false, club: false,
+                              holes: [], currentHole: 0, shots: [] });
 
 // // normally this would be imported from /constants, but in trying to keep
 // // this starter kit as small as possible we'll just define it here.
@@ -28,10 +29,24 @@ export default function play(state = initialState, action) {
   case 'CHANGE_HOLE':
     return state.merge({currentHole: action.index});
 
-  case 'ADD_SHOT':
-    // wait for pushIn!
-    return state.updateIn('shots', list => list.push(action.shot));
-    // return state.updateIn(['shots'], iList(), list => list.push(action.shot));
+  case 'SET_SHOT_DATA':
+    // get  all shots for hole with id === holeId
+    // merge the data for the shot in shots with index === shotIndex
+    if ( state.get('shots').size === 0) {
+      const shot = fromJS(action.shot).merge(fromJS({holeId: action.holeId}));
+      return state.updateIn(['shots'], iList, list => list.push(shot));
+    } else {
+      const newShot = fromJS(action.shot).merge(shot)
+
+      list = list.updateIn(['shots',]
+        list.findIndex(function(item) {
+          return item.get("name") === "third";
+        }), function(item) {
+          return item.merge(fromJS(action.shot));
+        }
+      );
+    }
+    break;
 
   case 'REMOVE_SHOT':
     return state.removeIn(['shots', action.index]);
@@ -43,3 +58,8 @@ export default function play(state = initialState, action) {
     return state;
   }
 }
+
+
+shots = [
+  {holeId: }
+]

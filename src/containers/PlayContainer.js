@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
+import { filter } from 'lodash';
 
 import { fetchHolesIfNeeded } from 'actions/holes';
 import { changeHole, endRound } from 'actions/play';
@@ -53,7 +54,8 @@ export class PlayContainer extends Component {
       return <Loading />;
     } else {
       const holeViews = holes.map( (hole) => {
-        return <HoleView key={hole.id} hole={hole} shots={shots} dispatch={dispatch} />;
+        const holeShots = filter(shots, {holeId: hole.id});
+        return <HoleView key={hole.id} hole={hole} shots={holeShots} dispatch={dispatch} />;
       });
 
       return (
