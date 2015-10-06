@@ -3,7 +3,8 @@ import { LIES } from 'constants';
 
 export default class Lie extends Component {
   static propTypes = {
-    addLie: PropTypes.func.isRequired
+    addLie: PropTypes.func.isRequired,
+    title: PropTypes.string.isRequired
   }
 
   constructor(props) {
@@ -12,11 +13,11 @@ export default class Lie extends Component {
   }
 
   render () {
-    const { addLie } = this.props;
+    const { addLie, title } = this.props;
 
     return (
       <div className="teeshot">
-        <h2>WHERE DID YOU HIT FROM?</h2>
+        <h2>{title}</h2>
         { this.lies.map((lie, index) =>
           <button className="bigass" key={index} onClick={() => addLie(lie)}>{lie}</button>
         )}

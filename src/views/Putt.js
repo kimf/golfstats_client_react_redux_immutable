@@ -1,29 +1,36 @@
 import React, {Component, PropTypes} from 'react';
+import { PUTT_RESULTS } from 'constants';
 
 export default class Putt extends Component {
   static propTypes = {
+    putt: PropTypes.object.isRequired,
     setShotData: PropTypes.func.isRequired
   }
 
   constructor(props) {
     super(props);
+    this.putt_results = PUTT_RESULTS;
   }
 
   addResult (result) {
     let endLie = null;
+    let success = false;
+    const club = 'PUTTER';
+    const goingFor = 'HOLE';
 
     if (result === 'OFF THE GREEN') {
       endLie = null;
     } else if (result === 'IN THE HOLE') {
+      success = true;
       endLie = 'IN THE HOLE';
     } else {
       endLie = 'GREEN';
     }
-    this.props.setShotData( { result, endLie } );
+    this.props.setShotData( { putt: true, result, endLie, success, club, goingFor } );
   }
 
   addDistance() {
-    this.props.setShotData( { distance: 2 } );
+    this.props.setShotData( { putt: true, distance: 2 } );
   }
 
   renderResults(result, index) {
@@ -31,29 +38,27 @@ export default class Putt extends Component {
   }
 
   render() {
-    const results = ['IN THE HOLE', 'SHORT', 'LONG', 'LEFT', 'RIGHT', 'OFF THE GREEN'];
-    const result = this.state.result;
-    const distance = this.state.distance;
+    const { putt } = this.props;
 
 
-    if (!result) {
+    if (!putt.result) {
       return (
-        <div className="teeshot">
+        <div className="putt">
           <h6>WHERE DID YOU PUTT IT?</h6>
-          { results.map(this.renderResults.bind(this)) }
+          { this.putt_results.map(this.renderResults.bind(this)) }
         </div>
       );
     }
 
-    if (!distance) {
+    if (!putt.distance) {
       return (
-        <div className="teeshot">
+        <div className="putt">
           <h6>WHAT WAS THE DISTANCE TO THE FLAG?</h6>
-          <button className="bigass" onClick={this.addDistance.bind(this)}>2m</button>
+          <button className="bigass" onClick={::this.addDistance}>2m</button>
         </div>
       );
     }
 
-    return <div>Saving...</div>;
+    return <div>Saving putt...</div>;
   }
 }

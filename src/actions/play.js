@@ -18,8 +18,8 @@ export function setShotData(shot, holeId, shotIndex) {
   return { type: 'SET_SHOT_DATA', shot, holeId, shotIndex};
 }
 
-export function removeShot(index) {
-  return { type: 'REMOVE_SHOT', index };
+export function removeShot(holeId, index) {
+  return { type: 'REMOVE_SHOT', holeId, index };
 }
 
 export function changeHole(index) {

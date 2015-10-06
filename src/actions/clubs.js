@@ -24,7 +24,7 @@ function fetchClubs() {
 
     const API_URL = (process.env.NODE_ENV === 'development') ? 'http://workbook.local:9292' : 'http://golfstats.fransman.se';
 
-    return fetch(API_URL +  '/clubs.json')
+    return fetch(API_URL + '/clubs.json')
       .then(response => response.json())
       .then(json =>
         // We can dispatch many times!

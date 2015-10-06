@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
-import { filter } from 'lodash';
 
 import { fetchHolesIfNeeded } from 'actions/holes';
 import { changeHole, endRound } from 'actions/play';
@@ -31,7 +30,7 @@ export class PlayContainer extends Component {
     club: PropTypes.object.isRequired,
     course: PropTypes.object.isRequired,
     slope: PropTypes.object.isRequired,
-    shots: PropTypes.array.isRequired,
+    shots: PropTypes.object.isRequired,
     currentHole: PropTypes.number.isRequired
   }
 
@@ -54,8 +53,7 @@ export class PlayContainer extends Component {
       return <Loading />;
     } else {
       const holeViews = holes.map( (hole) => {
-        const holeShots = filter(shots, {holeId: hole.id});
-        return <HoleView key={hole.id} hole={hole} shots={holeShots} dispatch={dispatch} />;
+        return <HoleView key={hole.id} hole={hole} shots={shots[hole.id]} dispatch={dispatch} />;
       });
 
       return (

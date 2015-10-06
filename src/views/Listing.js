@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ListItem from 'views/ListItem';
 import { selectItem, deSelectItem } from 'actions/general';
-import { filter, trim } from  'lodash';
+import { filter, trim } from 'lodash';
 
 export default class Listing extends Component {
   static propTypes = {
@@ -32,8 +32,8 @@ export default class Listing extends Component {
     const filterQuery = this.props.filterQuery;
 
     if ( filterQuery !== '' ) {
-      items = filter(items, (i) => {
-        const item = trim(i.name).toLowerCase();
+      items = filter(items, (it) => {
+        const item = trim(it.name).toLowerCase();
         return item.indexOf(filterQuery) !== -1;
       });
     }

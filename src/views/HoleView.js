@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import shallowEqual from 'react-redux/lib/utils/shallowEqual';
 
-import ShotItem from 'views/ShotItem';
+import ShotInput from 'views/ShotInput';
+import ShotListItem from 'views/ShotListItem';
 
 import { removeShot, setShotData } from 'actions/play';
 
@@ -22,21 +23,16 @@ export default class HoleView extends Component {
   }
 
   setShotData (shot, index) {
-    const hole = this.props.hole;
-    this.props.dispatch( setShotData(shot, hole.id, index) );
+    const holeId = this.props.hole.id;
+    this.props.dispatch( setShotData(shot, holeId, index) );
   }
 
-  removeShot (index) {
-    this.props.dispatch( removeShot(index) );
+  removeShot (holeId, index) {
+    this.props.dispatch( removeShot(holeId, index) );
   }
 
   render () {
-    const { hole } = this.props;
-    let shots = this.props.shots;
-
-    if (shots.length === 0) {
-      shots = [{}];
-    }
+    const { hole, shots } = this.props;
 
     return (
       <div>
@@ -45,15 +41,19 @@ export default class HoleView extends Component {
         </header>
         <div className="content">
           <ul>
-             {shots.map((t, index) =>
-               <ShotItem
-                 shot={t}
-                 par={hole.hole.par}
-                 key={index}
-                 index={index}
-                 onSetData={::this.setShotData}
-                 onRemove={() => ::this.removeShot(index)} />
-             )}
+            {shots.map((shot, index) => {
+              if (shot.finished) {
+                return <ShotListItem shot={shot} par={hole.hole.par} key={index} onRemove={() => this.removeShot(hole.id, index)} />;
+              } else {
+                return (<ShotInput
+                  shot={shot}
+                  par={hole.hole.par}
+                  key={index}
+                  index={index}
+                  onSetData={::this.setShotData} />
+                );
+              }
+            })}
            </ul>
         </div>
       </div>

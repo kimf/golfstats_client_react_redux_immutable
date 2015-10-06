@@ -12,7 +12,7 @@ export default class Miss extends Component {
   }
 
   render () {
-    const { addMissPosition }  = this.props;
+    const { addMissPosition } = this.props;
 
     return (
       <div className="teeshot">

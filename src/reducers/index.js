@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import { routerStateReducer } from 'redux-router';
 
-import play     from 'reducers/play';
-import clubs    from 'reducers/clubs';
+import play from 'reducers/play';
+import clubs from 'reducers/clubs';
 // import holes    from './holes';
 // import storage  from './storage';
 // import nav      from './navigation';
