@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import SwipeableViews from 'react-swipeable-views';
+
 import { fetchHolesIfNeeded } from 'actions/holes';
-import { endRound } from 'actions/play';
+import { changeHole, endRound } from 'actions/play';
 
 import Loading from 'views/Loading';
 import HoleView from 'views/HoleView';
@@ -16,7 +18,8 @@ const mapStateToProps = (state) => ({
   club: state.play.get('club').toJS(),
   course: state.play.get('course').toJS(),
   slope: state.play.get('slope').toJS(),
-  shots: state.play.get('shots').toJS()
+  shots: state.play.get('shots').toJS(),
+  currentHole: state.play.get('currentHole')
 });
 
 export class PlayContainer extends Component {
@@ -28,9 +31,7 @@ export class PlayContainer extends Component {
     course: PropTypes.object.isRequired,
     slope: PropTypes.object.isRequired,
     shots: PropTypes.array.isRequired,
-    params: PropTypes.shape({
-      index: PropTypes.string
-    }).isRequired
+    currentHole: PropTypes.number.isRequired
   }
 
   constructor (props) {
@@ -41,26 +42,26 @@ export class PlayContainer extends Component {
     this.props.dispatch( fetchHolesIfNeeded(this.props.slope.id) );
   }
 
-  // _increment () {
-  //   this.props.dispatch({ type : 'COUNTER_INCREMENT' });
-  // }
-
-  // <button className='btn btn-default'
-  //         onClick={::this._increment}>
+  changeHole (value) {
+    this.props.dispatch( changeHole(value) );
+  }
 
   render () {
-    const { loading, holes, shots, dispatch } = this.props;
+    const { loading, shots, holes, dispatch, currentHole} = this.props;
 
     if ( loading ) {
       return <Loading />;
     } else {
-      const holeIndex = parseInt(this.props.params.index, 10);
-      const hole = holes[holeIndex];
+      const holeViews = holes.map( (hole) => {
+        return <HoleView key={hole.id} hole={hole} shots={shots} dispatch={dispatch} />;
+      });
 
       return (
         <div>
-          <HoleView key={hole.id} hole={hole} shots={shots} dispatch={dispatch} />
-          <HoleSwitcher currentIndex={holeIndex} maxIndex={holes.length} />
+          <SwipeableViews index={currentHole} onChangeIndex={::this.changeHole}>
+            { holeViews }
+          </SwipeableViews>
+          <HoleSwitcher currentIndex={currentHole} maxIndex={holes.length - 1} changeHole={::this.changeHole}/>
           <ConfirmButton title="AVSLUTA RUNDA" question="For realz?" onConfirm={() => ::this.props.dispatch(endRound())} />
         </div>
       );

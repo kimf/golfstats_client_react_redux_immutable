@@ -8,6 +8,6 @@ import PlayContainer       from 'containers/PlayContainer';
 export default (
   <Route component={CoreLayout}>
     <Route name='home' path='/' component={SetupRoundContainer} />
-    <Route name='play' path='/play/:index' component={PlayContainer} />
+    <Route name='play' path='/play' component={PlayContainer} />
   </Route>
 );

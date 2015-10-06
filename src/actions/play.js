@@ -16,3 +16,7 @@ export function addShot(shot, holeId) {
 export function removeShot(index) {
   return { type: 'REMOVE_SHOT', index };
 }
+
+export function changeHole(index) {
+  return { type: 'CHANGE_HOLE', index };
+}

@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Link } from 'react-router';
 
 export default class HoleSwitcher extends Component {
   static propTypes = {
     maxIndex: PropTypes.number.isRequired,
-    currentIndex: PropTypes.number.isRequired
+    currentIndex: PropTypes.number.isRequired,
+    changeHole: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -12,17 +12,17 @@ export default class HoleSwitcher extends Component {
   }
 
   render() {
-    const {maxIndex, currentIndex} = this.props;
+    const {maxIndex, currentIndex, changeHole} = this.props;
 
     let next = '';
     let prev = '';
 
     if ( currentIndex < maxIndex) {
-      next = <Link className="btn back" to={`/play/${currentIndex + 1}`}>NEXT HOLE &rarr;</Link>;
+      next = <button className="btn back" onClick={() => changeHole(currentIndex + 1)}>NEXT HOLE &rarr;</button>;
     }
 
     if ( currentIndex > 0) {
-      prev = <Link className="btn next" to={`/play/${currentIndex - 1}`}>&larr; PREV HOLE</Link>;
+      prev = <button className="btn next" onClick={() => changeHole(currentIndex - 1)}>&larr; PREV HOLE</button>;
     }
 
     return (
