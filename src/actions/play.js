@@ -9,6 +9,11 @@ export function endRound() {
   };
 }
 
+export function resumeRound() {
+  const meta = { transition: () => ({ path: '/play'}) };
+  return { type: 'RESUME_ROUND', meta };
+}
+
 export function addShot(shot, holeId) {
   return { type: 'ADD_SHOT', shot, holeId };
 }

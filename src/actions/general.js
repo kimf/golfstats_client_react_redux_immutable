@@ -1,17 +1,9 @@
 export function selectItem(model, item) {
+  let meta = {};
   if ( model === 'slope' ) {
-    return {
-      type: 'SELECT_ITEM',
-      meta: {
-        transition: () => ({
-          path: '/play/0'
-        })
-      },
-      model,
-      item
-    };
+    meta = { transition: () => ({ path: '/play'}) };
   }
-  return { type: 'SELECT_ITEM', model, item };
+  return { type: 'SELECT_ITEM', model, item, meta };
 }
 
 export function deSelectItem(model) {
