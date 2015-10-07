@@ -1,5 +1,5 @@
-import webpack           from 'webpack';
-import config            from '../../config';
+import webpack from 'webpack';
+import config from '../../config';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const paths = config.get('utils_paths');
@@ -29,7 +29,8 @@ const webpackConfig = {
       filename : 'index.html',
       minify   : true,
       inject   : 'body'
-    })
+    }),
+    new webpack.optimize.CommonsChunkPlugin('vendor', '[name].[hash].js')
   ],
   resolve : {
     extensions : ['', '.js', '.jsx'],
@@ -88,14 +89,5 @@ const webpackConfig = {
     configFile : paths.project('.eslintrc')
   }
 };
-
-// NOTE: this is a temporary workaround. I don't know how to get Karma
-// to include the vendor bundle that webpack creates, so to get around that
-// we remove the bundle splitting when webpack is used with Karma.
-const commonChunkPlugin = new webpack.optimize.CommonsChunkPlugin(
-  'vendor', '[name].[hash].js'
-);
-commonChunkPlugin.__KARMA_IGNORE__ = true;
-webpackConfig.plugins.push(commonChunkPlugin);
 
 export default webpackConfig;

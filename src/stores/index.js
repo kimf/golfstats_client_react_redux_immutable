@@ -8,7 +8,7 @@ import persistState, {mergePersistedState} from 'redux-localstorage';
 import adapter from 'redux-localstorage/lib/adapters/localStorage';
 import filter from 'redux-localstorage-filter';
 import { reduxReactRouter } from 'redux-router';
-import { createHistory } from 'history';
+import createHistory from 'history/lib/createBrowserHistory';
 import storeEnhancer from 'redux-history-transitions';
 import { fromJS } from 'immutable';
 
@@ -48,7 +48,7 @@ if (__DEBUG__) {
 } else {
   createStoreWithMiddleware = compose(
     applyMiddleware(...middleware),
-    reduxReactRouter(history),
+    reduxReactRouter({history}),
     storeEnhancer(history),
     persistState(storage, 'golftracr')
   )(createStore);

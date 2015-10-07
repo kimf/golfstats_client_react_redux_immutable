@@ -1,6 +1,6 @@
-import webpack           from 'webpack';
+import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import webpackConfig     from './_base';
+import webpackConfig from './_base';
 
 webpackConfig.module.loaders = webpackConfig.module.loaders.map(loader => {
   if (/css/.test(loader.test)) {
