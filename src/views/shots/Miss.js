@@ -16,7 +16,7 @@ export default class Miss extends Component {
 
     return (
       <div className="teeshot">
-        <h6>WHERE DID YOU MISS IT?</h6>
+        <h2>WHERE DID YOU MISS IT?</h2>
         { this.misses.map((position, index) =>
           <button className="bigass" key={index} onClick={() => addMissPosition(position)}>{position}</button>
         )}

@@ -36,7 +36,7 @@ export default class Root extends Component {
     }
 
     return (
-      <div>
+      <div className="root">
         {debugTools}
         <Provider store={this.props.store}>
           <ReduxRouter>

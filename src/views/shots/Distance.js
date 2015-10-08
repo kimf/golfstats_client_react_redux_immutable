@@ -14,7 +14,7 @@ export default class Distance extends Component {
     const { addDistance } = this.props;
     return (
       <div className="teeshot">
-        <h6>WHAT WAS THE DISTANCE TO THE FLAG?</h6>
+        <h2>WHAT WAS THE DISTANCE TO THE FLAG?</h2>
         <button className="bigass" onClick={() => addDistance(125)}>125m</button>
       </div>
     );

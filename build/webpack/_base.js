@@ -27,7 +27,12 @@ const webpackConfig = {
       template : paths.src('index.html'),
       hash     : true,
       filename : 'index.html',
-      minify   : true,
+      minify   : {
+        removeComments: true,
+        collapseWhitespace: true,
+        useShortDoctype: true,
+        removeScriptTypeAttributes: true
+      },
       inject   : 'body'
     }),
     new webpack.optimize.CommonsChunkPlugin('vendor', '[name].[hash].js')

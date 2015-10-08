@@ -10,6 +10,7 @@ import filter from 'redux-localstorage-filter';
 import { reduxReactRouter } from 'redux-router';
 import createHistory from 'history/lib/createBrowserHistory';
 import storeEnhancer from 'redux-history-transitions';
+
 import { fromJS } from 'immutable';
 
 const middleware = [thunk, multi];

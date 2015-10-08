@@ -24,9 +24,9 @@ export default class ResumeRound extends Component {
   render () {
     const { course, club } = this.props;
     return (
-      <div>
+      <div className="content">
         <h1>You have an active round at {club} - {course}</h1>
-        <button onClick={::this.resume}>RESUME ROUND</button>
+        <button className="btn success" onClick={::this.resume}>RESUME ROUND</button>
         <ConfirmButton title="AVSLUTA RUNDA" question="For realz?" onConfirm={::this.end} />
       </div>
     );

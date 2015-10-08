@@ -35,7 +35,7 @@ export default class HoleView extends Component {
     const { hole, shots } = this.props;
 
     return (
-      <div>
+      <div className="holeview">
         <header>
           <h1>Hole {hole.hole.number} <small>{hole.length}m</small> <small>Par: {hole.hole.par}</small></h1>
         </header>

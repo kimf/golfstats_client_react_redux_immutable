@@ -17,6 +17,7 @@
     }],
     "no-else-return": 0,
     "space-before-function-paren": [0, "always"],
-    "react/jsx-quotes": [0, "single"]
+    "react/jsx-quotes": [0, "single"],
+    "react/jsx-boolean-value": [0, "never"]
   }
 }

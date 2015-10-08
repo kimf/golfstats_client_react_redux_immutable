@@ -51,6 +51,7 @@ export class SetupRoundContainer extends Component {
 
     return (
       <div>
+        <header className="globalheader">GOLFTRACR</header>
         { content }
       </div>
     );

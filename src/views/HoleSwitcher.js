@@ -18,18 +18,18 @@ export default class HoleSwitcher extends Component {
     let prev = '';
 
     if ( currentIndex < maxIndex) {
-      next = <button className="btn back" onClick={() => changeHole(currentIndex + 1)}>NEXT HOLE &rarr;</button>;
+      next = <button className="btn next" onClick={() => changeHole(currentIndex + 1)}>NEXT HOLE &rarr;</button>;
     }
 
     if ( currentIndex > 0) {
-      prev = <button className="btn next" onClick={() => changeHole(currentIndex - 1)}>&larr; PREV HOLE</button>;
+      prev = <button className="btn prev" onClick={() => changeHole(currentIndex - 1)}>&larr; PREV HOLE</button>;
     }
 
     return (
-      <ul>
+      <div>
         {prev}
         {next}
-      </ul>
+      </div>
     );
   }
 }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ListItem from 'views/ListItem';
 import { selectItem, deSelectItem } from 'actions/general';
-import { filter, trim } from 'lodash';
+import { filter, trim, sortBy } from 'lodash';
 
 export default class Listing extends Component {
   static propTypes = {
@@ -28,7 +28,7 @@ export default class Listing extends Component {
 
 
   render () {
-    let items = this.props.items;
+    let items = sortBy(this.props.items, (item) => { return item.name; });
     const filterQuery = this.props.filterQuery;
 
     if ( filterQuery !== '' ) {
@@ -39,13 +39,13 @@ export default class Listing extends Component {
     }
 
     return (
-      <div>
-        <header>
-          {this.back ? this.back : ''}
-          <h1>{this.title}</h1>
+      <div className="wrapper">
+        <header className={this.filterField ? 'searching' : ''}>
+          <h2>{this.title}</h2>
           {this.filterField ? this.filterField : ''}
         </header>
-        <section className="content">
+        <section className={this.filterField ? 'searching content' : 'content'}>
+          {this.back ? this.back : ''}
           <ul>
             {items.map((item) =>
               <ListItem title={item.name}

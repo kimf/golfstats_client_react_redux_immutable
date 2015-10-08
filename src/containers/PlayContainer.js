@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import SwipeableViews from 'react-swipeable-views';
 
 import { fetchHolesIfNeeded } from 'actions/holes';
-import { changeHole, endRound } from 'actions/play';
+import { changeHole } from 'actions/play';
 
 import Loading from 'views/Loading';
 import HoleView from 'views/HoleView';
 import HoleSwitcher from 'views/HoleSwitcher';
-import ConfirmButton from 'views/ConfirmButton';
+import ScorecardView from 'views/ScorecardView';
+import Modal from 'views/Modal';
 
-// const boolOrObject = PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired;
 
 const mapStateToProps = (state) => ({
   loading: state.play.get('loading'),
@@ -38,12 +38,21 @@ export class PlayContainer extends Component {
     super(props);
   }
 
+  state = {
+    showScorecard: false
+  }
+
   componentDidMount () {
     this.props.dispatch( fetchHolesIfNeeded(this.props.slope.id) );
   }
 
   changeHole (value) {
     this.props.dispatch( changeHole(value) );
+  }
+
+  showScorecard () {
+    const shown = this.state.showScorecard;
+    this.setState({showScorecard: shown ? false : true});
   }
 
   render () {
@@ -53,7 +62,12 @@ export class PlayContainer extends Component {
       return <Loading />;
     } else {
       const holeViews = holes.map( (hole) => {
-        return <HoleView key={hole.id} hole={hole} shots={shots[hole.id]} dispatch={dispatch} />;
+        return (
+          <HoleView key={hole.id}
+                    hole={hole}
+                    shots={shots[hole.id]}
+                    dispatch={dispatch} />
+        );
       });
 
       return (
@@ -61,8 +75,17 @@ export class PlayContainer extends Component {
           <SwipeableViews index={currentHole} onChangeIndex={::this.changeHole}>
             { holeViews }
           </SwipeableViews>
-          <HoleSwitcher currentIndex={currentHole} maxIndex={holes.length - 1} changeHole={::this.changeHole}/>
-          <ConfirmButton title="AVSLUTA RUNDA" question="For realz?" onConfirm={() => ::this.props.dispatch(endRound())} />
+          <footer>
+            <HoleSwitcher currentIndex={currentHole} maxIndex={holes.length - 1} changeHole={::this.changeHole}/>
+            <button className="scorecardbtn btn" onClick={::this.showScorecard}>SCORECARD</button>
+          </footer>
+          <Modal isOpen={this.state.showScorecard} transitionName="modal-anim">
+            <ScorecardView
+              onClose={::this.showScorecard}
+              dispatch={dispatch}
+              holes={holes}
+              shots={shots} />
+          </Modal>
         </div>
       );
     }

@@ -1,45 +1,139 @@
-html {
+@import 'loader';
+
+// COLORS
+$blue: #0B83C9;
+$green: #68C968;
+$red: #C9656B;
+$headerbg: #DDE8DB;
+//SETTINGS
+$maxwidth: 380px;
+$maxheight: 600px;
+
+*, html {
   box-sizing: border-box;
-}
-*, *:before, *:after {
-  box-sizing: inherit;
 }
 
 html, body {
   margin: 0;
   padding: 0;
+  font-family: system, -apple-system, "SF UI Display", "Helvetica Neue", "Lucida Grande";
+  font-weight: 300;
+  font-size: 14pt;
+  height: 100%
 }
 
-
-
-.container {
+.container, .root {
   float: left;
   text-align: left;
-  max-width: 370px;
-  overflow-x: scroll;
+  width: 100%;
+  max-width: $maxwidth;
+  height: $maxheight;
+  overflow: hidden;
+  position: fixed;
 }
 
-.content {
-  padding: 20px;
-  float: left;
-  width: 100%
-}
-
-header, footer {
-  background: #ccc;
+header.globalheader {
+  background: $blue;
+  color: #fff;
+  position: fixed;
+  height: 42px;
   padding: 10px 20px;
   width: 100%;
+  max-width: $maxwidth;
   float: left;
+}
 
-  input {
+
+.wrapper {
+  position: fixed;
+  top: 42px;
+  height: calc(100% - 42px);
+  overflow: auto;
+  width: 100%;
+  max-width: $maxwidth;
+
+  header {
+    background: $headerbg;
+    padding: 0 20px;
     float: left;
+    height: 100px;
+    position: absolute;
+    top: 0px;
     width: 100%;
-    padding: 5px;
-    font-size: 1.2em;
+    max-width: $maxwidth;
+
+    input {
+      float: left;
+      width: 100%;
+      padding: 5px;
+      font-size: 1.2em;
+      margin: 0;
+    }
+
+    &.searching {
+      height: 180px;
+    }
   }
 
-  &.subheader {
-    background: #eee;
+  .content {
+    padding: 20px;
+    float: left;
+    width: 100%;
+    max-width: $maxwidth;
+    height: calc(100% - 100px);
+    position: absolute;
+    top: 100px;
+    overflow: auto;
+
+    &.searching {
+      top: 180px;
+      height: calc(100% - 180px);
+    }
+
+    > .goback {
+      margin-top: -20px;
+      margin-left: -20px;
+      width: $maxwidth;
+      border-radius: 0;
+      text-align: left;
+      background: #B7C1B5;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  padding: 0;
+  width: 100%;
+  height: 42px;
+  background: #eee;
+
+  button.btn {
+    background: $blue;
+    border: 0;
+    width: ($maxwidth - 100) / 2;
+    height: 42px;
+    float: left;
+    margin: 0;
+    border-radius: 0;
+    padding: 5px 0;
+
+    &.next {
+      float: right;
+    }
+
+    &.scorecardbtn {
+      position: absolute;
+      bottom: 0;
+      left: $maxwidth/2 - 50;
+      width: 100px;
+      background: black;
+      padding-top: 10px solid black;
+      height: 50px;
+    }
   }
 }
 
@@ -110,5 +204,145 @@ ul {
   &:hover {
     background: #00B2CA;
     color: #fff;
+  }
+}
+
+
+.btn, .bigass {
+  display: inline-block;
+  padding: 10px 20px;
+  border: 0;
+  background: #222;
+  color: #fff;
+  margin: 2px;
+  border-radius: 4px;
+  text-decoration: none;
+
+  &:hover {
+    background: darken(#222, 10%);
+  }
+
+  &.success {
+    background: $green;
+
+    &:hover {
+      background: darken($green, 10%);
+    }
+  }
+
+  &.warning {
+    background: $red;
+
+    &:hover {
+      background: darken($red, 10%);
+    }
+  }
+
+  &.block {
+    margin: 0;
+    float: left;
+    width: 100%;
+    padding: 10px 0;
+    text-align: center;
+  }
+}
+
+
+.loading {
+  width: 100%;
+  height: 100%;
+  background: #feb;
+  text-align: center;
+  padding-top: 50px;
+}
+
+
+.holeview {
+  height: 600px;
+  float: left;
+
+  header {
+    background: $blue;
+    color: #fff;
+    height: 42px;
+    padding: 10px 20px;
+
+    h1,h2,h3 {
+      font-size: 20px;
+      margin: 0;
+      padding: 0;
+
+      small {
+        float: right;
+        margin: 0 5px;
+        color: #ccc;
+      }
+    }
+  }
+
+  .content {
+    padding: 20px;
+
+    h2 {
+      font-size: 18px;
+      color: #444;
+
+      strong {
+        color: $green;
+      }
+    }
+
+    button.bigass {
+      width: 30%;
+      border-radius: 0;
+      padding: 20px 0;
+      text-align: center;
+    }
+  }
+}
+
+
+.modal {
+  width: $maxwidth;
+  height: $maxheight;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  transition:   transform .3s ease-in-out;
+}
+
+.modal-anim-enter {
+  transform: translate(0, 200%);
+}
+
+.modal-anim-enter.modal-anim-enter-active {
+  transform: translate(0, 0);
+}
+
+.modal-anim-leave {
+  transform: translate(0, 0);
+}
+
+.modal-anim-leave.modal-anim-leave-active {
+  transform: translate(0, 200%);
+}
+
+
+.scorecard {
+  float: left;
+  width: $maxwidth;
+  height: $maxheight;
+  background: $headerbg;
+  padding: 20px;
+  position: relative;
+
+  footer {
+    left: 0;
+    button {
+      float: left;
+      width: 33%
+    }
   }
 }

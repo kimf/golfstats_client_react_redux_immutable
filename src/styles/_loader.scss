@@ -1,0 +1,101 @@
+@keyframes ball-loader {
+  0% {
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+    animation-timing-function: ease-in;
+  }
+  45% {
+    transform: translate3d(0, 150px, -10px) scale3d(1, 0.95, 1);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translate3d(0, 150px, -10px) scale3d(1, 0.5, 1);
+    animation-timing-function: linear;
+  }
+  55% {
+    transform: translate3d(0, 150px, -10px) scale3d(1, 1.25, 1);
+    animation-timing-function: ease-out;
+  }
+}
+@keyframes ball-loader-highlight {
+  0% {
+    transform: skew(-20deg, 0) translate3d(0, 2.5px, 1px);
+    animation-timing-function: ease-in;
+  }
+  45% {
+    transform: skew(-30deg, 0) translate3d(0, 0, 1px);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: skew(-30deg, 0) translate3d(0, 0, 1px);
+    animation-timing-function: linear;
+  }
+  55% {
+    transform: skew(-30deg, 0) translate3d(0, 0, 1px);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: skew(-20deg, 0) translate3d(0, 2.5px, 1px);
+    animation-timing-function: ease-in;
+  }
+}
+@keyframes ball-loader-shadow {
+  0% {
+    transform: translate3d(66.66667px, 66.66667px, -1px) scale3d(1.25, 1.25, 1);
+    animation-timing-function: ease-in;
+  }
+  45% {
+    transform: translate3d(12.5px, -15px, -1px);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translate3d(12.5px, -15px, -1px) scale3d(1, 1, 1);
+    animation-timing-function: linear;
+  }
+  55% {
+    transform: translate3d(12.5px, -15px, -1px);
+    animation-timing-function: ease-out;
+  }
+  100% {
+    transform: translate3d(66.66667px, 66.66667px, -1px) scale3d(1.25, 1.25, 1);
+    animation-timing-function: ease-in;
+  }
+}
+.ball-loader {
+  position: relative;
+  display: inline-block;
+  font-size: 0;
+  letter-spacing: -1px;
+  border-radius: 100%;
+  background: #0B83C9;
+  width: 50px;
+  height: 50px;
+  transform-style: preserve-3d;
+  transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
+  transform-origin: 0 100%;
+  animation: ball-loader 1500ms infinite linear;
+}
+.ball-loader::after {
+  content: '';
+  position: absolute;
+  top: 4.5px;
+  left: 5.5px;
+  width: 15px;
+  height: 15px;
+  background: #81E3E9;
+  border-radius: 100%;
+  transform: skew(-20deg, 0) translate3d(0, 2.5px, 1px);
+  animation: ball-loader-highlight 1500ms infinite linear;
+}
+.ball-loader::before {
+  content: '';
+  position: absolute;
+  top: 50px;
+  left: 5.5px;
+  width: 50px;
+  height: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 100%;
+  transform: translate3d(66.66667px, 66.66667px, -1px) scale3d(1.25, 1.25, 1);
+  animation: ball-loader-shadow 1500ms infinite linear;
+  filter: blur(1px);
+}
