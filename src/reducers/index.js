@@ -1,8 +1,7 @@
-import { combineReducers } from 'redux';
-import { routerStateReducer } from 'redux-router';
+import { combineReducers } from 'redux'
 
-import play from 'reducers/play';
-import clubs from 'reducers/clubs';
+import play from 'reducers/play'
+import clubs from 'reducers/clubs'
 // import holes    from './holes';
 // import storage  from './storage';
 // import nav      from './navigation';
@@ -10,9 +9,8 @@ import clubs from 'reducers/clubs';
 
 
 const rootReducer = combineReducers({
-  router: routerStateReducer,
   play,
   clubs
-});
+})
 
-export default rootReducer;
+export default rootReducer

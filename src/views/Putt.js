@@ -1,64 +1,62 @@
-import React, {Component, PropTypes} from 'react';
-import { PUTT_RESULTS } from 'constants';
+import React, { Component, PropTypes } from 'react'
+import { PUTT_RESULTS } from 'constants'
 
 export default class Putt extends Component {
   static propTypes = {
-    putt: PropTypes.object.isRequired,
+    putt: PropTypes.shape().isRequired,
     setShotData: PropTypes.func.isRequired
   }
 
   constructor(props) {
-    super(props);
-    this.putt_results = PUTT_RESULTS;
+    super(props)
+    this.putt_results = PUTT_RESULTS
   }
 
-  addResult (result) {
-    let endLie = null;
-    let success = false;
-    const club = 'PUTTER';
-    const goingFor = 'HOLE';
+  addResult = (result) => {
+    let endLie = null
+    let success = false
+    const club = 'PUTTER'
+    const goingFor = 'HOLE'
 
     if (result === 'OFF THE GREEN') {
-      endLie = null;
+      endLie = null
     } else if (result === 'IN THE HOLE') {
-      success = true;
-      endLie = 'IN THE HOLE';
+      success = true
+      endLie = 'IN THE HOLE'
     } else {
-      endLie = 'GREEN';
+      endLie = 'GREEN'
     }
-    this.props.setShotData( { putt: true, result, endLie, success, club, goingFor } );
+    this.props.setShotData({ putt: true, result, endLie, success, club, goingFor })
   }
 
-  addDistance() {
-    this.props.setShotData( { putt: true, distance: 2 } );
-  }
+  addDistance = () => this.props.setShotData({ putt: true, distance: 2 })
 
-  renderResults(result, index) {
-    return <button key={index} className="bigass" onClick={this.addResult.bind(this, result)}>{result}</button>;
-  }
+  renderResults = (result, index) => (
+    <button key={index} className="bigass" onClick={() => this.addResult(result)}>{result}</button>
+  )
 
   render() {
-    const { putt } = this.props;
+    const { putt } = this.props
 
 
     if (!putt.result) {
       return (
         <div className="putt">
           <h6>WHERE DID YOU PUTT IT?</h6>
-          { this.putt_results.map(this.renderResults.bind(this)) }
+          {this.putt_results.map(this.renderResults())}
         </div>
-      );
+      )
     }
 
     if (!putt.distance) {
       return (
         <div className="putt">
           <h6>WHAT WAS THE DISTANCE TO THE FLAG?</h6>
-          <button className="bigass" onClick={::this.addDistance}>2m</button>
+          <button className="bigass" onClick={this.addDistance}>2m</button>
         </div>
-      );
+      )
     }
 
-    return <div>Saving putt...</div>;
+    return <div>Saving putt...</div>
   }
 }

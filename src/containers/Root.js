@@ -1,49 +1,26 @@
-import React, { Component, PropTypes } from 'react';
-import { Provider } from 'react-redux';
-import routes from '../routes';
-import { ReduxRouter } from 'redux-router';
-import { createDevToolsWindow } from '../utils';
-import { DevTools, LogMonitor, DebugPanel } from 'redux-devtools/lib/react';
+import React, { PropTypes } from 'react'
+import { Provider } from 'react-redux'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-export default class Root extends Component {
+import 'styles/core.scss'
+import SetupRoundContainer from 'containers/SetupRoundContainer'
+import PlayContainer from 'containers/PlayContainer'
 
-  static propTypes = {
-    store: PropTypes.object.isRequired
-  }
+const Root = ({ store }) => (
+  <div className="root">
+    <Provider store={store}>
+      <Router>
+        <div className="container">
+          <Route name="home" exact path="/" component={SetupRoundContainer} />
+          <Route name="play" path="/play" component={PlayContainer} />
+        </div>
+      </Router>
+    </Provider>
+  </div>
+)
 
-  constructor () {
-    super();
-  }
-
-  renderDevTools () {
-    if (__DEBUG_NW__) {
-      createDevToolsWindow(this.props.store);
-      return null;
-    } else {
-      return (
-        <DebugPanel top right bottom key="debugPanel">
-          <DevTools store={this.props.store} monitor={LogMonitor} />
-        </DebugPanel>
-      );
-    }
-  }
-
-  render () {
-    let debugTools = null;
-
-    if (__DEBUG__) {
-      debugTools = this.renderDevTools();
-    }
-
-    return (
-      <div className="root">
-        {debugTools}
-        <Provider store={this.props.store}>
-          <ReduxRouter>
-            {routes}
-          </ReduxRouter>
-        </Provider>
-      </div>
-    );
-  }
+Root.propTypes = {
+  store: PropTypes.shape().isRequired
 }
+
+export default Root

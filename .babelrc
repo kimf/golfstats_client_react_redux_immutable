@@ -1,3 +1,29 @@
 {
-  "stage"   : 0
+  "presets": [
+    [
+      "es2015",
+      {
+        "modules": false
+      }
+    ],
+    "stage-2",
+    "react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel",
+    "transform-class-properties",
+    "transform-runtime",
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "shared": "./src/components/Shared"
+        }
+      }
+    ]
+  ],
+  "sourceMaps": true
 }

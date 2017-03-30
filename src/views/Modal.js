@@ -1,26 +1,27 @@
-import React, { Component, PropTypes } from 'react';
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React, { PropTypes } from 'react'
+import CSSTransitionGroup from 'react-transition-group/CSSTransitionGroup'
 
-export default class Modal extends Component {
-  static propTypes = {
-    isOpen: PropTypes.bool,
-    transitionName: PropTypes.string,
-    children: PropTypes.object
+const Modal = ({ isOpen, transitionName, children }) => {
+  if (isOpen) {
+    return (
+      <CSSTransitionGroup transitionName={transitionName} transitionEnterTimeout={500} transitionLeaveTimeout={300}>
+        <div className="modal" key="modal">
+          {children}
+        </div>
+      </CSSTransitionGroup>
+    )
+  } else {
+    return <CSSTransitionGroup transitionName={transitionName} transitionEnterTimeout={500} transitionLeaveTimeout={300} />
   }
+}
 
-  render () {
-    const { isOpen, transitionName, children } = this.props;
+Modal.propTypes = {
+  isOpen: PropTypes.bool,
+  transitionName: PropTypes.string.isRequired,
+  children: PropTypes.node
+}
 
-    if (isOpen) {
-      return (
-        <ReactCSSTransitionGroup transitionName={transitionName} transitionEnterTimeout={500} transitionLeaveTimeout={300}>
-          <div className="modal">
-            {children}
-          </div>
-        </ReactCSSTransitionGroup>
-      );
-    } else {
-      return <ReactCSSTransitionGroup transitionName={transitionName} transitionEnterTimeout={500} transitionLeaveTimeout={300} />;
-    }
-  }
+Modal.defaultProps = {
+  isOpen: false,
+  children: null
 }

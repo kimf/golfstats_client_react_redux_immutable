@@ -1,17 +1,19 @@
-import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch'
 
-export const REQUEST_HOLES = 'REQUEST_HOLES';
+import { API_URL } from 'constants'
+
+export const REQUEST_HOLES = 'REQUEST_HOLES'
 function requestHoles() {
-  return { type: REQUEST_HOLES };
+  return { type: REQUEST_HOLES }
 }
 
-export const RECEIVE_HOLES = 'RECEIVE_HOLES';
+export const RECEIVE_HOLES = 'RECEIVE_HOLES'
 function receiveHoles(json) {
   return {
     type: RECEIVE_HOLES,
     holes: json.tees,
     receivedAt: Date.now()
-  };
+  }
 }
 
 function fetchHoles(slopeId) {
@@ -19,14 +21,13 @@ function fetchHoles(slopeId) {
     // First dispatch: the app state is updated to inform
     // that the API call is starting.
 
-    dispatch(requestHoles());
+    dispatch(requestHoles())
 
     // The function called by the thunk middleware can return a value,
     // that is passed on as the return value of the dispatch method.
 
     // In this case, we return a promise to wait for.
     // This is not required by thunk middleware, but it is convenient for us.
-    const API_URL = (process.env.NODE_ENV === 'development') ? 'http://workbook.local:9292' : 'http://golfstats.fransman.se';
     return fetch(API_URL + '/slopes/' + slopeId + '.json')
       .then(response => response.json())
       .then(json =>
@@ -35,19 +36,19 @@ function fetchHoles(slopeId) {
         // Here, we update the app state with the results of the API call.
 
         dispatch(receiveHoles(json))
-      );
+      )
 
-      // In a real world app, you also want to
-      // catch any error in the network call.
-  };
+    // In a real world app, you also want to
+    // catch any error in the network call.
+  }
 }
 
 function shouldFetchHoles(state) {
-  const holes = state.play.get('holes').size;
+  const holes = state.play.get('holes').size
   if (holes === 0) {
-    return true;
+    return true
   } else if (state.play.get('loading')) {
-    return false;
+    return false
   }
 }
 
@@ -62,10 +63,10 @@ export function fetchHolesIfNeeded(slopeId) {
   return (dispatch, getState) => {
     if (shouldFetchHoles(getState())) {
       // Dispatch a thunk from thunk!
-      return dispatch(fetchHoles(slopeId));
+      return dispatch(fetchHoles(slopeId))
     } else {
       // Let the calling code know there's nothing to wait for.
-      return Promise.resolve();
+      return Promise.resolve()
     }
-  };
+  }
 }

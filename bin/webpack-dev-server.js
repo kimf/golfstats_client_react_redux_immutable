@@ -1,12 +1,9 @@
-require('babel-register')
+require('babel/register');
 
-const config = require('../config')
-const server = require('../server/app')
-const debug = require('debug')('app:bin:server')
+const devServer = require('../build/webpack-dev-server'),
+      config    = require('../config');
 
-const host = config.server_host
-const port = config.server_port
-
-server.listen(port, host, function () {
-  debug('Server is now running at ' + host + ':' + port + '.')
-})
+const port = config.get('webpack_port');
+devServer.listen(port, 'localhost', function () {
+  console.log('Webpack dev server running at localhost:' + port);
+});

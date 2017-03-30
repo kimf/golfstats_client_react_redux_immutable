@@ -1,13 +1,9 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Root from './containers/Root';
-import configureStore from './stores';
-import ohcrash from 'ohcrash';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Root from './containers/Root'
+import store from './stores'
 
-ohcrash('M28zhqe0eziYXIt6lECbahqY');
+const target = document.getElementById('root')
+const node = <Root store={store} />
 
-const target = document.getElementById('root');
-const store = configureStore();
-
-const node = <Root store={store}/>;
-ReactDOM.render(node, target);
+ReactDOM.render(node, target)

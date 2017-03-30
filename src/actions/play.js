@@ -1,27 +1,15 @@
-export function endRound() {
-  return {
-    type: 'END_ROUND',
-    meta: {
-      transition: () => ({
-        path: '/'
-      })
-    }
-  };
-}
+export const endRound = () => ({
+  type: 'END_ROUND'
+})
 
-export function resumeRound() {
-  const meta = { transition: () => ({ path: '/play'}) };
-  return { type: 'RESUME_ROUND', meta };
-}
+export const setShotData = (shot, holeId, shotIndex) => ({
+  type: 'SET_SHOT_DATA', shot, holeId, shotIndex
+})
 
-export function setShotData(shot, holeId, shotIndex) {
-  return { type: 'SET_SHOT_DATA', shot, holeId, shotIndex};
-}
+export const removeShot = (holeId, index) => ({
+  type: 'REMOVE_SHOT', holeId, index
+})
 
-export function removeShot(holeId, index) {
-  return { type: 'REMOVE_SHOT', holeId, index };
-}
-
-export function changeHole(index) {
-  return { type: 'CHANGE_HOLE', index };
-}
+export const changeHole = (index) => ({
+  type: 'CHANGE_HOLE', index
+})
