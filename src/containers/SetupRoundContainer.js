@@ -6,15 +6,16 @@ import ClubList from 'views/ClubList'
 import CourseList from 'views/CourseList'
 import SlopeList from 'views/SlopeList'
 import ResumeRound from 'views/ResumeRound'
+import Loading from 'views/Loading'
 
 const boolOrObject = PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired
 
 const mapStateToProps = (state) => ({
-  filterQuery: state.clubs.get('filterQuery'),
-  clubs: state.clubs.get('clubs').toJS(),
-  club: state.play.get('club'),
-  course: state.play.get('course'),
-  slope: state.play.get('slope')
+  ...state.clubs,
+  club: state.play.club,
+  course: state.play.course,
+  slope: state.play.slope,
+  rehydrated: state.appReducer.rehydrated
 })
 
 class SetupRoundContainer extends Component {
@@ -24,7 +25,8 @@ class SetupRoundContainer extends Component {
     club: boolOrObject,
     course: boolOrObject,
     slope: boolOrObject,
-    filterQuery: PropTypes.string.isRequired
+    filterQuery: PropTypes.string.isRequired,
+    rehydrated: PropTypes.bool.isRequired
   }
 
   static defaultProps = {
@@ -38,15 +40,17 @@ class SetupRoundContainer extends Component {
   }
 
   render() {
-    const { club, clubs, course, slope, dispatch, filterQuery } = this.props
+    const { club, clubs, course, slope, dispatch, filterQuery, rehydrated } = this.props
 
     let content = ''
-    if (slope) {
-      content = <ResumeRound course={course.toJS().name} club={club.toJS().name} dispatch={dispatch} />
+    if (!rehydrated) {
+      content = <Loading />
+    } else if (slope) {
+      content = <ResumeRound course={course.name} club={club.name} dispatch={dispatch} />
     } else if (course) {
-      content = <SlopeList items={course.get('slopes').toJS()} dispatch={dispatch} filterQuery={filterQuery} />
+      content = <SlopeList items={course.slopes} dispatch={dispatch} filterQuery={filterQuery} />
     } else if (club) {
-      content = <CourseList items={club.get('courses').toJS()} dispatch={dispatch} filterQuery={filterQuery} />
+      content = <CourseList items={club.courses} dispatch={dispatch} filterQuery={filterQuery} />
     } else {
       content = <ClubList items={clubs} dispatch={dispatch} filterQuery={filterQuery} />
     }

@@ -37,12 +37,9 @@ function fetchClubs() {
 }
 
 function shouldFetchClubs(state) {
-  const clubs = state.clubs.get('clubs').size
-  if (clubs === 0) {
-    return true
-  } else if (state.clubs.get('loading')) {
-    return false
-  }
+  if (state.clubs.loading) { return false }
+  if (state.clubs.clubs.length > 0) { return false }
+  return true
 }
 
 // eslint-disable-next-line import/prefer-default-export

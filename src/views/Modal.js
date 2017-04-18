@@ -25,3 +25,5 @@ Modal.defaultProps = {
   isOpen: false,
   children: null
 }
+
+export default Modal

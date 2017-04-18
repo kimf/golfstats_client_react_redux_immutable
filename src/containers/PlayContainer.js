@@ -10,15 +10,14 @@ import HoleSwitcher from 'views/HoleSwitcher'
 import ScorecardView from 'views/ScorecardView'
 import Modal from 'views/Modal'
 
-
 const mapStateToProps = (state) => ({
-  loading: state.play.get('loading'),
-  holes: state.play.get('holes').toJS(),
-  club: state.play.get('club').toJS(),
-  course: state.play.get('course').toJS(),
-  slope: state.play.get('slope').toJS(),
-  shots: state.play.get('shots').toJS(),
-  currentHole: state.play.get('currentHole')
+  loading: state.play.loading,
+  holes: state.play.holes,
+  club: state.play.club,
+  course: state.play.course,
+  slope: state.play.slope,
+  shots: state.play.shots,
+  currentHole: state.play.currentHole
 })
 
 class PlayContainer extends Component {
@@ -26,13 +25,9 @@ class PlayContainer extends Component {
     dispatch: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     holes: PropTypes.arrayOf(PropTypes.shape()).isRequired,
-    slope: PropTypes.shape().isRequired,
+    slope: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]).isRequired,
     shots: PropTypes.shape().isRequired,
     currentHole: PropTypes.number.isRequired
-  }
-
-  constructor(props) {
-    super(props)
   }
 
   state = {
@@ -40,7 +35,9 @@ class PlayContainer extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch(fetchHolesIfNeeded(this.props.slope.id))
+    if (this.props.slope) {
+      this.props.dispatch(fetchHolesIfNeeded(this.props.slope.id))
+    }
   }
 
   changeHole = (value) => {
@@ -48,8 +45,7 @@ class PlayContainer extends Component {
   }
 
   showScorecard = () => {
-    const shown = this.state.showScorecard
-    this.setState({ showScorecard: shown ? false : true })
+    this.setState(state => ({ showScorecard: !state.showScorecard }))
   }
 
   render() {
@@ -57,36 +53,32 @@ class PlayContainer extends Component {
 
     if (loading) {
       return <Loading />
-    } else {
-      const holeViews = holes.map((hole) => {
-        return (
-          <HoleView
-            key={hole.id}
-            hole={hole}
-            shots={shots[hole.id]}
-            dispatch={dispatch}
-          />
-        )
-      })
-
-      return (
-        <div>
-          {holeViews}
-          <footer>
-            <HoleSwitcher currentIndex={currentHole} maxIndex={holes.length - 1} changeHole={this.changeHole} />
-            <button className="scorecardbtn btn" onClick={this.showScorecard}>SCORECARD</button>
-          </footer>
-          <Modal isOpen={this.state.showScorecard} transitionName="modal-anim">
-            <ScorecardView
-              onClose={this.showScorecard}
-              dispatch={dispatch}
-              holes={holes}
-              shots={shots}
-            />
-          </Modal>
-        </div>
-      )
     }
+
+    const hole = holes[currentHole]
+
+    return (
+      <div>
+        <HoleView
+          key={hole.id}
+          hole={hole}
+          shots={shots[hole.id]}
+          dispatch={dispatch}
+        />
+        <footer>
+          <HoleSwitcher currentIndex={currentHole} maxIndex={holes.length - 1} changeHole={this.changeHole} />
+          <button className="scorecardbtn btn" onClick={this.showScorecard}>SCORECARD</button>
+        </footer>
+        <Modal isOpen={this.state.showScorecard} transitionName="modal-anim">
+          <ScorecardView
+            onClose={this.showScorecard}
+            dispatch={dispatch}
+            holes={holes}
+            shots={shots}
+          />
+        </Modal>
+      </div>
+    )
   }
 }
 

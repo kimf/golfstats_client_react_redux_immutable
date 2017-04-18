@@ -45,13 +45,14 @@ export default class HoleView extends Component {
               if (shot.finished) {
                 return <ShotListItem shot={shot} par={hole.hole.par} key={`shot_${shot.id}_hole_${hole.id}`} onRemove={() => this.removeShot(hole.id, index)} />
               } else {
-                return (<ShotInput
-                  shot={shot}
-                  par={hole.hole.par}
-                  key={`shot_input_${shot.id}_hole_${hole.id}`}
-                  index={index}
-                  onSetData={this.setShotData}
-                />
+                return (
+                  <ShotInput
+                    shot={shot}
+                    par={hole.hole.par}
+                    key={`shot_input_${shot.id}_hole_${hole.id}`}
+                    index={index}
+                    onSetData={this.setShotData}
+                  />
                 )
               }
             })}

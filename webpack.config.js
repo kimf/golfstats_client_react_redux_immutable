@@ -35,7 +35,6 @@ const plugins = [
 const jsEntry = [
   'react-hot-loader/patch',
   'webpack-dev-server/client?http://localhost:3000',
-  'webpack/hot/only-dev-server',
   'index'
 ]
 

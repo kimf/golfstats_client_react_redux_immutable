@@ -1,28 +1,31 @@
-import { fromJS } from 'immutable'
-
-const initialState = fromJS({ loading: false, clubs: [], filterQuery: '' })
+const initialState = {
+  loading: false,
+  clubs: [],
+  filterQuery: ''
+}
 
 export default function clubsReducer(state = initialState, action) {
   switch (action.type) {
 
     case 'REQUEST_CLUBS':
-      return state.set('loading', true)
+      return { ...state, loading: true }
 
     case 'SELECT_ITEM':
-      return state.merge({ filterQuery: '' })
+      return { ...state, filterQuery: '' }
 
     case 'RECEIVE_CLUBS':
-      return fromJS({
+      return {
+        ...state,
         loading: false,
         clubs: action.clubs,
-        receivedAt: action.receivedAt,
-        filterQuery: state.get('filterQuery')
-      })
+        receivedAt: action.receivedAt
+      }
 
     case 'FILTER_ITEMS':
-      return state.merge({
+      return {
+        ...state,
         filterQuery: action.filterQuery.trim().toLowerCase()
-      })
+      }
 
     default:
       return state

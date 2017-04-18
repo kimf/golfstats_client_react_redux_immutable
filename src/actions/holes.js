@@ -44,10 +44,10 @@ function fetchHoles(slopeId) {
 }
 
 function shouldFetchHoles(state) {
-  const holes = state.play.get('holes').size
+  const holes = state.play.holes.length
   if (holes === 0) {
     return true
-  } else if (state.play.get('loading')) {
+  } else if (state.play.loading) {
     return false
   }
 }

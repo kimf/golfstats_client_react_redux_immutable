@@ -1,23 +1,22 @@
 import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 import 'styles/core.scss'
-import SetupRoundContainer from 'containers/SetupRoundContainer'
-import PlayContainer from 'containers/PlayContainer'
+import App from 'App'
 
-const Root = ({ store }) => (
-  <div className="root">
-    <Provider store={store}>
-      <Router>
-        <div className="container">
-          <Route name="home" exact path="/" component={SetupRoundContainer} />
-          <Route name="play" path="/play" component={PlayContainer} />
-        </div>
-      </Router>
-    </Provider>
-  </div>
-)
+
+const Root = ({ store }) => {
+  return (
+    <div className="root">
+      <Provider store={store}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </div>
+  )
+}
 
 Root.propTypes = {
   store: PropTypes.shape().isRequired
